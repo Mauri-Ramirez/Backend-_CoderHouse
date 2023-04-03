@@ -1,0 +1,33 @@
+[
+	{
+		"tittle": "titulo ejemplo1",
+		"description": " descripcion ejemplo1",
+		"price": 10,
+		"thumbnail": "img ejemplo1",
+		"code": 1,
+		"stock": 23,
+		"id": 1
+
+		
+	},
+
+	{
+		"tittle": "titulo ejemplo2",
+		"description": " descripcion ejemplo2",
+		"price": 1000,
+		"thumbnail": "img ejemplo2",
+		"code": 2,
+		"stock": 23,
+		"id": 2
+	},
+
+	{
+		"tittle": "titulo ejemplo3",
+		"description": " descripcion ejemplo3",
+		"price": 500,
+		"thumbnail": "img ejemplo3",
+		"code": 3,
+		"stock": 23,
+		"id": 3
+	}
+]
