@@ -1,33 +1,46 @@
 [
 	{
-		"tittle": "titulo ejemplo1",
-		"description": " descripcion ejemplo1",
-		"price": 10,
-		"thumbnail": "img ejemplo1",
-		"code": 1,
-		"stock": 23,
+		"title": "titlenew 1",
+		"description": "descriptionnew 1",
+		"code": "1",
+		"price": 100,
+		"status": true,
+		"stock": 10,
+		"category": "categorynew",
+		"thumbnails": "[]new",
 		"id": 1
-
-		
 	},
-
 	{
-		"tittle": "titulo ejemplo2",
-		"description": " descripcion ejemplo2",
-		"price": 1000,
-		"thumbnail": "img ejemplo2",
-		"code": 2,
-		"stock": 23,
+		"title": "PUTejemploo",
+		"description": "PUTejemploo",
+		"code": "PUTejemploo",
+		"price": "111ejemplo",
+		"status": "true",
+		"stock": "111ejemplo",
+		"category": "PUTejemplo",
+		"thumbnails": "[]PUT",
 		"id": 2
 	},
-
 	{
-		"tittle": "titulo ejemplo3",
-		"description": " descripcion ejemplo3",
-		"price": 500,
-		"thumbnail": "img ejemplo3",
-		"code": 3,
-		"stock": 23,
+		"title": "titlenew 3",
+		"description": "descriptionnew 3",
+		"code": "3",
+		"price": 300,
+		"status": true,
+		"stock": 30,
+		"category": "categorynew 3",
+		"thumbnails": "[]new3",
 		"id": 3
+	},
+	{
+		"title": "titlenew 4",
+		"description": "descriptionnew 4",
+		"code": "4",
+		"price": 400,
+		"status": true,
+		"stock": 40,
+		"category": "categorynew 4",
+		"thumbnails": "[]new4",
+		"id": 4
 	}
 ]
