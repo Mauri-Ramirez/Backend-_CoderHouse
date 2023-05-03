@@ -1,0 +1,60 @@
+<div>
+    <h2>Realtime-Products !!!!</h2>
+    <hr>
+    <form id="formProduct">
+        <p>Title</p>
+        <input type="text" name="title" id="title"><hr>
+        <p>Description</p>
+        <input type="text" name="description" id="description"><hr>
+        <p>Code</p>
+        <input type="text" name="code" id="code"><hr>
+        <p>Price</p>
+        <input type="text" name="price" id="price"><hr>
+        <p>Stock</p>
+        <input type="text" name="stock" id="stock"><hr>
+        <p>category</p>
+        <input type="text" name="category" id="category"><hr>
+
+        <input type="submit" value="enviar">
+    </form>
+
+    <div id="listProducts">
+
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io()
+
+    let form = document.querySelector("#formProduct")
+
+    form.addEventListener("submit", evt =>{
+        evt.preventDefault()
+        let title = form.elements.title.value
+        let description = form.elements.description.value
+        let code = form.elements.code.value
+        let price = form.elements.price.value
+        let stock = form.elements.stock.value
+        let category = form.elements.category.value
+
+        const newProduct = {title, description, code, price, stock, category}
+       socket.emit("addProduct", newProduct)
+        console.log(newProduct)
+        
+        form.reset()
+    })
+
+
+    socket.on("productos", data =>{
+        console.log(data)
+
+        let div = document.getElementById("listProducts")
+        let productos = ""
+        data.forEach((products) =>{
+            const { title, description, code, price, stock, category} = products
+            productos += `<div> title: ${products.title} description: ${products.description} code: ${products.code} price: ${products.price} stock: ${products.stock} category: ${products.category} </div>`
+        })
+        div.innerHTML = productos
+    })
+</script>
