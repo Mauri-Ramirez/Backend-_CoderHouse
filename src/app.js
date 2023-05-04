@@ -43,19 +43,27 @@ const io = new Server(httpServer)
 socketProduct(io)
 
 
-
+let messages = []
 io.on("connection", socket =>{
     console.log("new client connected");
 
     socket.on("message", data =>{
         console.log(data);
+        messages.push(data)
+        io.emit("messageLogs", messages)
+        
     })
 
-    socket.emit("event-socket-individual", " este mensaje lo recibe el socket del cliente")
+    socket.on("authenticated", data =>{
+        socket.broadcast.emit("newUserConnected", data)
+    })
 
-    socket.broadcast.emit("evet-para-todos-menos-el-socket-actual", "este mensaje lo veran todos los socket menos el socket actual")
 
-    io.emit("evt-para-todos", "este msj lo recieben todos los socket conectados")
+   // socket.emit("event-socket-individual", " este mensaje lo recibe el socket del cliente")
+
+   // socket.broadcast.emit("evet-para-todos-menos-el-socket-actual", "este mensaje lo veran todos los socket menos el socket actual")
+
+    //io.emit("evt-para-todos", "este msj lo recieben todos los socket conectados")
 })
 
 app.use("/", realtimeProd )
