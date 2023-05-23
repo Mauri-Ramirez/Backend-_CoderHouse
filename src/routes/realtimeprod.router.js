@@ -1,6 +1,6 @@
 const { Router } = require("express")
 const router = Router()
-const productManager = require("../ManagerDaos/productManager")
+const productManager = require("../dao/fileManagers/ProductManager")
 const path = "products.json"
 
 const ProductManager = new productManager(path)
@@ -15,7 +15,7 @@ const ProductManager = new productManager(path)
     }
 })  */
 
-router.get('/home', async (req, res) => {
+router.get("/home", async (req, res) => {
     const products = await ProductManager.getProducts()
     res.render("home", {
         style:"home.css",

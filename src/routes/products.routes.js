@@ -1,15 +1,22 @@
 const { Router } = require("express")
-const router = Router(); // se crea una instancia del router
-const ProductManager = require("../ManagerDaos/productManager")
-const manager = new ProductManager("products.json")
+const ProductManager = require("../dao/fileManagers/ProductManager")
+const ProductManagerMongo = require("../dao/mongoManagers/ProductManagerMongo")
+const options = require("../config/options")
 
+
+
+const router = Router(); // se crea una instancia del router
+
+//const manager = new ProductManager("products.json")
+const productService = new ProductManager(options.fileSystem.productsFileName)
+const productMongoService = new ProductManagerMongo()
 
 //GET ---> TRAE TODOS LOS PRODUCTOS
 
 router.get('/', async (req, res)=>{
     const limit = req.query.limit
     try {
-        const products = await manager.getProducts()
+        const products = await productMongoService.getProducts()
         if(!limit){
             return res.send({
                 status: 'success',
@@ -35,7 +42,7 @@ router.get('/', async (req, res)=>{
 router.get('/:pid', async (req, res)=>{
     const id = req.params.pid
     try {
-        const product = await manager.getProductById(id)
+        const product = await productMongoService.getProductById(id)
         res.send({product})
         
     } catch (error) {
@@ -48,6 +55,7 @@ router.get('/:pid', async (req, res)=>{
 
 
 //POST ---> Agrega un producto al array de productos
+
 
 router.post('/', async (req, res) =>{
     try {
@@ -65,7 +73,7 @@ router.post('/', async (req, res) =>{
         if(!Object.keys(newProduct).length){
             throw new Error('Error: Missing product')
         }
-        const addProduct = await manager.addProduct(newProduct)
+        const addProduct = await productMongoService.addProduct(newProduct)
         res.send({
             status: 'success',
             added: addProduct
@@ -88,7 +96,7 @@ router.put('/:pid', async(req, res)=>{
         if(req.body.id){
             throw new Error("No id must be provided")
         }
-        const updateProduct = await manager.updateProduct(productId, req.body)
+        const updateProduct = await productMongoService.updateProduct(productId, req.body)
         res.send({
             status: 'success',
             newProduct: updateProduct
@@ -109,7 +117,7 @@ router.put('/:pid', async(req, res)=>{
 router.delete('/:pid', async(req, res)=>{
     const productId = req.params.pid
     try {
-        const deleteProduct = await manager.deleteProduct(productId)
+        const deleteProduct = await productMongoService.deleteProduct(productId)
         res.send({
             status: 'success',
             deletedProduct: deleteProduct
