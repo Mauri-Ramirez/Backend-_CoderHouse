@@ -2,16 +2,30 @@ const productModel = require("../models/product.model");
 
 class ProductManagerMongo {
     
-    async getProducts() {
+    async getProducts({limit, page, query, sort}) {
         try {
-            const products = await productModel.find()
-            return products
+            const filter = (query ? {category: query} : {})
+
+            const options = {
+                sort: (sort ? {price: sort}: {}),
+                limit: limit || 10,
+                page: page || 1,
+                lean: true
+
+                
+            }
             
+            const products = await productModel.paginate(filter, options)
+            return products
+
         } catch (error) {
             throw new Error(error.message)
+            
         }
+
     }
 
+   
     async getProductById(id) {
         try {
             const product = await productModel.findById(id)

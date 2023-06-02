@@ -1,85 +1,46 @@
 const { Router } = require("express")
-//const { userModel } = require("../dao/models/user.model")
+const productModel = require("../dao/models/product.model")
+const ProductManagerMongo = require("../dao/mongoManagers/ProductManagerMongo")
+const CartManagerMongo = require("../dao/mongoManagers/CartManagerMongo")
+
 
 const router = Router()
+const productMongo = new ProductManagerMongo()
+const cartMongo = new CartManagerMongo()
 
-/* router.get("/", async (req, res)=>{
+router.get("/products", async (req, res) =>{
     try {
-        let users = await userModel.find()
-        console.log(users);
-        res.send({
-            status: "success",
-            payload: users
+        const products = await productMongo.getProducts(req.params)
+        res.render("index",{
+            title: "E-commerce",
+            style:"index.css",
+            products: products.docs
         })
-        
     } catch (error) {
-        console.log(error);
-        
+        res.status(500).send({
+            status: "error",
+            error: error.message
+        })
     }
 })
 
-router.post("/", async (req, res)=>{
+router.get("/cart/:cid", async (req, res)=>{
+    const cartId = req.params.cid
     try {
-        let user = req.body
-        
-        const newUser = {
-            firt_name: user.nombre,
-            last_name: user.apellido,
-            email: user.email
-        }
-
-        let result = await userModel.create(newUser)
-        res.status(200).send({result})
+        const cart = await cartMongo.getCartById(cartId)
+        res.render("cart", {
+            title: "Cart",
+            style:"cart.css",
+            products: cart.products,
+            cartId: cart._id
+        })
     } catch (error) {
-        console.log(error);
+        res.status(500).send({
+            status: "error",
+            error: error.message
+        })
     }
 })
 
-router.put("/:uid", async(req, res) =>{
-    const { uid } = req.params
-    const user = req.body
-    let userToReplace = {
-        firt_name: user.nombre,
-        last_name: user.apellido,
-        email: user.email
-    }
-    
-    let result = await userModel.updateOne({_id: uid}, userToReplace )
-    
-    res.send({
-        status: "succes",
-        payload: result
-    })
-})
-
-router.delete("/:uid", async (req, res)=>{
-    try {
-        let {uid} = req.params
-        let result = await userModel.deleteOne({_id: uid})
-        res.send({status: " succes", payload: result})
-    } catch (error) {
-        console.log(error);
-        
-    }
-}) */
-
-
-router.get("/", (req,res) =>{
-
-    let testUser = {
-        style: "index.css",
-
-        name: "mauriiiii",
-
-        title: "ecommerce",
-
-    }
-
-    res.render("index", testUser)
-}) 
-
-/* router.get("/realtimeprod", (req,res)=>{
-    res.render("realtimeprod", {})
-}) */
 
 module.exports = router

@@ -13,7 +13,32 @@ const productMongoService = new ProductManagerMongo()
 
 //GET ---> TRAE TODOS LOS PRODUCTOS
 
-router.get('/', async (req, res)=>{
+router.get("/", async (req, res) =>{
+    try {
+        const products = await productMongoService.getProducts(req.query)
+        return res.send({
+            status: "succes",
+            payload: products.docs,
+            totalPages: products.totalPages,
+            prevPage: products.prevPage,
+            nextPage: products.nextPage,
+            page: products.page,
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,
+            prevLink: null,
+            nexLink:null
+        })
+
+    } catch (error) {
+        res.status(500).send({
+            status: "error",
+            error: error.message
+        })
+        
+    }
+})
+
+/* router.get('/', async (req, res)=>{
     const limit = req.query.limit
     try {
         const products = await productMongoService.getProducts()
@@ -33,7 +58,7 @@ router.get('/', async (req, res)=>{
             error: error.message
         })
     }
-})
+}) */
 
 
 

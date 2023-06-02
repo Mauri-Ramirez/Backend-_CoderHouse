@@ -6,7 +6,7 @@ const chatRoutes = require("./chat.routes")
 const router = Router();
 
 router.use("/products", productRoutes)
-router.use("/cart", cartRoutes)
+router.use("/carts", cartRoutes)
 router.use("/chat", chatRoutes)
 
 module.exports = router;

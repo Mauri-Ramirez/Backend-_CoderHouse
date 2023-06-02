@@ -34,10 +34,6 @@ app.use("/api", apiRoutes)
 app.use("/", viewsRouter)
 
 
-/* app.get("/chat", (req, res)=>{
-    res.render("chat", {})
-}) */
-
 //se pone en marcha
 const httpServer = app.listen(PORT, err =>{
     if (err)console.log(err);

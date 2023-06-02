@@ -1,4 +1,5 @@
 const cartModel = require("../models/cart.model")
+const productModel = require("../models/product.model")
 
 class CartManagerMongo {
 
@@ -15,7 +16,7 @@ class CartManagerMongo {
 
     async getCartById(id) {
         try {
-            const cart = await cartModel.findOne({_id: id})
+            const cart = await cartModel.findOne({_id: id}).lean()
             return cart
 
         } catch (error) {
@@ -33,7 +34,70 @@ class CartManagerMongo {
         }
     }
 
-    async addProduct(cartId, productId){
+    async addProductToCart(cartId, productId, amount){
+        try {
+            let cart = await this.getCartById(cartId)
+            const Originalproduct = await productModel.findById(productId)
+            const producToAdd = cart.products.findIndex(product => product.product._id == productId)
+            if(!amount){
+                if(producToAdd < 0){
+                    cart.products.push({product: productId})
+                }else{
+                    cart.products[producToAdd].quantity ++
+                }
+            }else{
+                cart.products[producToAdd].quantity = amount
+            }
+            let result = await cartModel.updateOne({_id:cartId}, cart)
+            return result
+
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    } 
+
+
+
+    async updateProducts (cartId, newProducts){
+        try {
+            const cart = await this.getCartById(cartId)
+            cart.products = newProducts
+            await cartModel.updateOne({_id:cartId}, cart)
+            return newProducts
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async deleteProductFromCart(cartId, prodcutId){
+        try {
+            const cart = await this.getCartById(cartId)
+            const productToDelete = cart.products.find(product => product.product._id == prodcutId)
+            const index = cart.products.indexOf(productToDelete)
+            if(index < 0){
+                throw new Error("Product not found")
+            }
+            cart.products.splice(index, 1)
+            const result = cartModel.updateOne({_id:cartId},cart)
+            return result
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async deleteAllProducts(cartId){
+        try {
+            const cart = await this.getCartById(cartId)
+            cart.products = []
+            const result = cartModel.updateOne({_id:cartId}, cart)
+            return result
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+
+   /*   async addProduct(cartId, productId){
         try {
             let cart = await this.getCartById(cartId)
             cart.products.push({product: productId})
@@ -43,7 +107,9 @@ class CartManagerMongo {
         } catch (error) {
             throw new Error(error.message)
         }
-    }
+    }  */
+
+   
 }
 
 
