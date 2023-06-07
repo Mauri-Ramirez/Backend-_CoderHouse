@@ -2,11 +2,12 @@ const {connect} = require("mongoose")
 //const mongoose = require("mongoose")
 const options = require("./options")
 
-/* mongoose.connect(options.mongoDB.url, (error) =>{
+/* mongoose.set('strictQuery', false)
+mongoose.connect(options.mongoDB.url, (error) => {
     if(error){
-        return console.log(`db connection failes: ${error}`);
+        return console.log(`db connection failed: ${error}`)
     }
-    console.log("connected to db");
+    console.log('connected to db');
 }) */
 
 module.exports = {

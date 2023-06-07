@@ -9,11 +9,19 @@
 </head>
 <body>
     <nav>
-       {{!--  <a href="/home">Home</a><hr> --}}
-        <a href="/products">Products</a>
-        {{!-- <a href="/realtimeprod">realtime product</a> --}}
-
+        
+        <h1>E-commerce</h1>
+        <ul id="nav-mobile">
+            <li><a href="/products">Home-products</a></li>
+            <li><a href="api/chat">Chat</a></li>
+            {{#if user}}
+            <li><button id="logout-button">Logout</button></li>
+            {{/if}}
+        </ul>
+        </div>
     </nav>
-    {{{body}}}    
+    {{{body}}}   
+
+     <script src="statics/js/main.js"></script>
 </body>
 </html>

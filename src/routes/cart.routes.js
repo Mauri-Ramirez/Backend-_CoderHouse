@@ -11,22 +11,6 @@ const cartManagerMongo = new CartManagerMongo()
 
 //TRAE TODOS LOS CARTS
 
-/* router.get("/", async (req, res) =>{
-    try {
-        const cart = await cartModel.find({})
-        res.send({
-            status: "success",
-            carts: cart
-        })
-    } catch (error) {
-        res.status(500).send({
-            status: "error",
-            error: error.message
-        })
-        
-    }
-})  */
-
 
   router.get("/", async (req, res) =>{
     try {
@@ -45,22 +29,6 @@ const cartManagerMongo = new CartManagerMongo()
 }) 
  
 //TRAE UN CART POR SU ID
-
-/* router.get("/:cid", async (req, res) =>{
-    const id = req.params.cid
-    try {
-        const cart = await cartModel.findOne({_id: id})
-        res.send({
-            status:"success",
-            cart: cart
-        })
-    } catch (error) {
-        res.status(500).send({
-            status: "error",
-            error: error.message
-        })
-    }
-}) */
 
  router.get("/:cid", async (req, res) =>{
     const id = req.params.cid
@@ -192,59 +160,6 @@ router.delete("/:cid", async(req,res)=>{
     }
 })
 
-/* router.post("/:cid/product/:pid", async(req, res) =>{
-    try {
-        const cartId = req.params.cid
-        const prodcutId = req.params.pid
-        const addProduct = await cartManagerMongo.addProductToCart(cartId, prodcutId)
-        res.send({
-            status:"success",
-            newCart: addProduct
-        })
-    } catch (error) {
-        res.status(500).send({
-            status: "error",
-            error: error.message
-        })
-    }
-})
- */
 
-//GET ---> TRAE UN CART EN ESPECIFICO
-
-/*  router.get("/:cid", async (req, res) =>{
-    const cid = Number(req.params.cid);
-    if(isNaN(cid)){
-        res.status(400).send("debe ser un numero");
-    }else{
-        res.json({
-            status: "success",
-            data: await cartManager.getCartById(cid),
-        });
-    }
-});  */
-
-
-
-//POST --->  cid/products/pid AGREGA UN PROD A UN CARRITO YA CREADO SI YA EXISTE ESE PROD SOLO SE AGREGA UNO EN LA CANTIDAD
-
-/*  router.post('/:cid/products/:pid', async(req,res)=>{
-    try {
-        const cid = Number(req.params.cid)
-        const pid = Number(req.params.pid)
-        const addProduct = await cartManager.addProduct(cid, pid)
-        console.log(addProduct);
-        res.send({
-            status: 'success',
-            newCart: addProduct,
-        })
-    } catch (error) {
-        res.status(500).send({
-            status: "error",
-            error: error.message
-        })
-    }
-}) 
- */
 
 module.exports = router;

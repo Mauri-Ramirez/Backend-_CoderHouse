@@ -1,5 +1,11 @@
 <div>
     <div>
+    <div class="welcome-box z-depth-2">
+        <h3 class="welcome-title">Welcome {{user.firstName}} {{user.lastName}} ({{user.role}})</h3>
+        <p class="user-email">{{user.email}}</p>
+        <p class="user-age">{{user.age}} years old</p>
+    </div>
+    <div>
     <h1 class="main-title">Our products</h1>
     <button id="see-cart-button" onclick="seeCart(event)">See Cart</button>
     <div id="product-list-container">
@@ -23,7 +29,8 @@
 </div>
 </div>
 <div>
-    <button><a href={{prevLink}}>Anterior</a></button>
+
+   <button><a href={{prevLink}}>Anterior</a></button>
     <button><a href={{nextLing}}>Siguiente</a></button>
 </div>
 <script src="/statics/js/index.js"></script>

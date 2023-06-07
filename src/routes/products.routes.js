@@ -38,28 +38,6 @@ router.get("/", async (req, res) =>{
     }
 })
 
-/* router.get('/', async (req, res)=>{
-    const limit = req.query.limit
-    try {
-        const products = await productMongoService.getProducts()
-        if(!limit){
-            return res.send({
-                status: 'success',
-                data: products})
-        }
-        const limitedProducts = products.slice(0,limit)
-        res.send({
-            status: 'success',
-            data: limitedProducts
-        })
-    } catch (error) {
-        res.status(500).send({
-            status: "error",
-            error: error.message
-        })
-    }
-}) */
-
 
 
 //GET ---> TRAE UN PRODUCTO POR SU ID

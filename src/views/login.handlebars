@@ -1,0 +1,23 @@
+<h1 class="login-title">Login</h1>
+
+<div class="login-form">
+    <form action="/api/session/login" method="post">
+        <div class="row">
+            <div>
+                <input type="email" class="validate" name="email">
+                <label for="disabled">Email</label>
+                <span class="helper-text" data-error="Introduce a valid email" data-success="right"></span>
+            </div>
+        </div>
+        <div>
+            <div>
+                <input type="password" class="validate" name="password">
+                <label for="password">Password</label>
+            </div>
+        </div>
+        <input  type="submit" value="Log in">
+    </form>
+</div>
+
+<a href="/register" class="link-register">Are you new? Sign up!</a>
+ 
