@@ -9,12 +9,10 @@ const { socketProduct } = require("./utils/socketProduct")
 const dbConfig = require("./config/dbConfig")
 const { socketChat } = require("./utils/socketChat")
 
-//const cookieParser = require("cookie-parser")
 const MongoStore = require("connect-mongo")
 const session = require("express-session")
-//const sessionRouter = require("./routes/session.routes")
-//const authMiddleware = require("./middlewares/auth.middleware") 
-
+const passport = require("passport")
+const initializePassport = require("./config/passport.config")
 
 
 //se inicia el servidor
@@ -24,7 +22,9 @@ const PORT = process.env.PORT || 8080;
 //////////
 dbConfig.connectDB()
 /////////
-//hbs-----------------------------------
+
+
+//hbs---templates--------------------------------
 //inicializamos el motor indicado con app.engine("que motor", el motor instanciado)
 app.engine("handlebars", handlebars.engine())
 //indocamos en parte del proyecto estan las vistas app.set("viewas",ruta)
@@ -33,11 +33,10 @@ app.set("views", path.resolve(__dirname, "./views"))
 app.set("view engine", "handlebars")
 //-----------------------------------------
 
+//MIDDLEWARES
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use('/statics', express.static(path.resolve(__dirname, "./public")))
-
-//app.use(cookieParser());
 
 //Setear session    
  app.use(session({
@@ -54,6 +53,10 @@ app.use('/statics', express.static(path.resolve(__dirname, "./public")))
         ttl: 4000 
     })
 }))
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 ///Routes
 app.use("/api", apiRoutes)
