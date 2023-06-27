@@ -15,9 +15,9 @@ router.get("/failRegister", (req, res) =>{
     res.send({error: "Failed Register"})
 })
 
-router.get("/", (req, res) =>{
+/* router.get("/", (req, res) =>{
     res.send("Session!!!!")
-})
+}) */
 
 /* router.post("/register", async (req, res)=>{
     try {
@@ -41,6 +41,7 @@ router.post("/login",
     roleMiddleware,
     passport.authenticate("login", {failureRedirect: "/api/session/failLogin"}),
     async(req, res)=>{
+        console.log(req.user);
         if(!req, res){
             return res.status(400).send({
                 status: "error",
@@ -107,6 +108,7 @@ router.get("/github",
 router.get("/github/callback",
     passport.authenticate("github", {failureRedirect: "/api/session/failLogin"}),
     async (req, res) =>{
+        console.log(req.user);
         const sessionUser = {
             firstName: req.user.firstName,
             lastName: req.user.lastName,

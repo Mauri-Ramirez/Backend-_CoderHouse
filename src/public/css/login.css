@@ -6,8 +6,18 @@
 
 .login-form{
     text-align: center;
+    
 }
 
 .link-register{
-    font-size: 2.5rem;
+    margin: 2rem;
+    display: block;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.link-github{
+    margin: 2rem;
+    display: block;
+    text-align: center;
 }

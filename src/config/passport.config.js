@@ -10,10 +10,10 @@ const GitHubStrategy = github.Strategy
 
 const initializePassport = () =>{
     //Local Register
-    passport.use("register", new LocalStrategy(
+     passport.use("register", new LocalStrategy(
         {
             passReqToCallback: true,
-            usernameField: "email"
+            usernameField: "email" 
         },
         async (req, username, password, done) => {
             const { firstName, lastName, email, age } = req.body
@@ -45,7 +45,7 @@ const initializePassport = () =>{
 
     //Local Login
 
-    passport.use("login", new LocalStrategy(
+     passport.use("login", new LocalStrategy(
         {usernameField: "email"},
         async(username, password, done) =>{
             try {
@@ -63,7 +63,7 @@ const initializePassport = () =>{
             }
         }
     ))
-
+ 
     //Github Strategy
     passport.use(
         new GitHubStrategy({
@@ -78,8 +78,12 @@ const initializePassport = () =>{
                 if(!user){
                     const newUser = {
                         firstName: userData.name.split(" ")[0],
-                        lastName: userData.name.split(" ")[1],
-                        age: userData.age || " ",
+                        lastName: userData.name.split(" ")[2],
+                        //firstName: userData.fistName,
+                        //lastName: userData.lastName,
+                        //email: userData.email || " ",
+                        email: userData.email,
+                        age: userData.age || 0,
                         password: " ",
                         githubLogin: userData.login
                     }
@@ -104,6 +108,6 @@ passport.serializeUser((user, done) =>{
 passport.deserializeUser(async (id, done) =>{
     const user = await userService.findById(id)
     done(null, user)
-})
+}) 
 
 module.exports = initializePassport

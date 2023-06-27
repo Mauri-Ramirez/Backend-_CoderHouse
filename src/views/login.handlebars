@@ -2,11 +2,10 @@
 
 <div class="login-form">
     <form action="/api/session/login" method="post">
-        <div class="row">
+        <div>
             <div>
                 <input type="email" class="validate" name="email">
-                <label for="disabled">Email</label>
-                <span class="helper-text" data-error="Introduce a valid email" data-success="right"></span>
+                <label for="disabled">Email</label>               
             </div>
         </div>
         <div>
@@ -19,7 +18,7 @@
     </form>
 </div>
 
-<a href="/api/session/github"><button>Sign in with Github</button></a>
+<a href="/api/session/github" class="link-github"><button>Sign in with Github</button></a>
 
 <a href="/register" class="link-register">Are you new? Sign up!</a>
  

@@ -16,7 +16,7 @@ router.get("/", sessionMiddleware, (req, res) =>{
 
 router.get("/register", sessionMiddleware, (req, res)=>{
     res.render("register", {
-        title: "Sing Up!",
+        title: "Sign Up!",
         style: "register.css"
     })
 })
@@ -32,7 +32,7 @@ router.get("/login", sessionMiddleware, (req, res)=>{
 router.get("/products", authMiddleware, async (req, res) =>{
     try {
         const user = req.session.user
-        const products = await productMongo.getProducts(req.query) //params
+        const products = await productMongo.getProducts(req.query)
         res.render("index",{
             title: "E-commerce",
             style:"index.css",
