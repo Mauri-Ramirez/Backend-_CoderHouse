@@ -1,4 +1,4 @@
-const roleMiddleware = async (req,res, next) =>{
+const roleMiddleware = async (req, res, next) =>{
     const {email, password} = req.body
     if(email == "adminCoder@coder.com" && password == "adminCod3r123"){
         req.session.user = {

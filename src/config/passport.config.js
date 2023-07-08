@@ -1,12 +1,21 @@
 const passport = require("passport")
 const local = require("passport-local")
 const github = require("passport-github2")
-
-const userService = require("../dao/models/user.model")
+const jwt = require("passport-jwt")
+//const userService = require("../dao/models/user.model")
 const { createHash, isValidPassword  } = require("../utils/bcrypt.utils")
+const CartManagerMongo = require("../dao/mongoManagers/CartManagerMongo")
+const UserManagerMongo = require("../dao/mongoManagers/UserManagerMongo")
+const { cookieExtractor } = require("../utils/session.utils")
+const { SECRET_KEY } = require("../constants/session.constants")
+
+const usersDao = new UserManagerMongo()
+const cartsDao = new CartManagerMongo()
 
 const LocalStrategy = local.Strategy
 const GitHubStrategy = github.Strategy
+const JwtStrategy = jwt.Strategy
+const ExtractJWT = jwt.ExtractJwt
 
 const initializePassport = () =>{
     //Local Register
@@ -22,7 +31,8 @@ const initializePassport = () =>{
                 return done(null, false)
             }
             try {
-                let user = await userService.findOne({email:username})
+                const user = await usersDao.getByEmail(username)
+                const cart = await cartsDao.addCart()
                 if(user){
                     console.log("User already exist");
                     return done(null, false)
@@ -32,9 +42,10 @@ const initializePassport = () =>{
                     lastName,
                     email,
                     age,
-                    password: createHash(password)
+                    password: createHash(password),
+                    cart: cart._id
                 }
-                let result = await userService.create(newUser)
+                let result = await usersDao.addUser(newUser)
                 return done(null, result)
             } catch (error) {
                 return done("Error getting user: " + error)
@@ -49,13 +60,12 @@ const initializePassport = () =>{
         {usernameField: "email"},
         async(username, password, done) =>{
             try {
-                const user = await userService.findOne({email:username})
+                const user = await usersDao.getByEmail(username)
                 if(!user){
-                    console.log("user not found");
-                    return done(null, false)
+                    return done(null, false, "user not found")
                 }
                 if(!isValidPassword(user, password)){
-                    return done(null, false)
+                    return done(null, false, "wrong user or password")
                 }
                 return done(null, user)
             } catch (error) {
@@ -72,32 +82,47 @@ const initializePassport = () =>{
             callbackURL: "http://localhost:8080/api/session/github/callback"
         },
         async (accessToken, refreshToken, profile, done)=>{
+            const userData = profile._json
             try {
-                const userData = profile._json
-                const user = await userService.findOne({email: userData.email})
+                const user = await usersDao.getByEmail(userData.email)
                 if(!user){
+                    const cart = await cartsDao.addCart()
                     const newUser = {
                         firstName: userData.name.split(" ")[0],
-                        lastName: userData.name.split(" ")[2],
+                        lastName: userData.name.split(" ")[1],
                         //firstName: userData.fistName,
                         //lastName: userData.lastName,
                         //email: userData.email || " ",
-                        email: userData.email,
                         age: userData.age || 0,
+                        email: userData.email,
                         password: " ",
-                        githubLogin: userData.login
+                        githubLogin: userData.login,
+                        cart: cart.id
                     }
-                    const response = userService.create(newUser)
-                    const user = response._doc
-                    done(null, user)
-                }else{
-                    done(null, user)
+                    const response = await usersDao.addUser(newUser)
+                    const finalUser = response._doc
+                    done(null, finalUser)
+                    return
                 }
+                done(null, user)   
             } catch (error) {
                 console.log("Github login error " + error);
                 done(error)
             }
         }
+    ))
+
+    //JWT
+    passport.use("jwt", new JwtStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: SECRET_KEY
+    }, async(jwt_payload, done)=>{
+        try {
+            return done(null, jwt_payload)
+        } catch (error) {
+            return done(error)
+        }
+    }
     ))
 }
 
@@ -106,7 +131,7 @@ passport.serializeUser((user, done) =>{
 })
 
 passport.deserializeUser(async (id, done) =>{
-    const user = await userService.findById(id)
+    const user = await usersDao.getById(id)
     done(null, user)
 }) 
 

@@ -1,116 +1,81 @@
 const cartModel = require("../models/cart.model")
 const productModel = require("../models/product.model")
+const { HttError } = require("../../utils/error.utils")
+const HTTP_STATUS = require("../../constants/api.constants")
 
 class CartManagerMongo {
 
     async getCarts() {
-        try {
-            const carts = await cartModel.find()
+        const carts = await cartModel.find()
             return carts
-            
-        } catch (error) {
-            throw new Error(error.message)
-            
-        }
     }
 
     async getCartById(id) {
-        try {
-            const cart = await cartModel.findOne({_id: id}).lean()
+        const cart = await cartModel.findOne({_id: id}).lean()
             return cart
-
-        } catch (error) {
-            throw new Error(error.message)
-        }
     }
 
     async addCart(){
-        try {
-            const newCart = await cartModel.create({})
+        const newCart = await cartModel.create({})
             return newCart
-            
-        } catch (error) {
-            throw new Error(error.message)
-        }
     }
 
     async addProductToCart(cartId, productId, amount){
-        try {
-            let cart = await this.getCartById(cartId)
-            const Originalproduct = await productModel.findById(productId)
-            const producToAdd = cart.products.findIndex(product => product.product._id == productId)
-            if(!amount){
-                if(producToAdd < 0){
-                    cart.products.push({product: productId})
-                }else{
-                    cart.products[producToAdd].quantity ++
+        const updatedCart = await cartModel.findByIdAndUpdate(cartId, {
+            $push: {
+                products: {
+                    product: productId,
+                    quantity: amount
                 }
-            }else{
-                cart.products[producToAdd].quantity = amount
             }
-            let result = await cartModel.updateOne({_id:cartId}, cart)
-            return result
-
-        } catch (error) {
-            throw new Error(error.message)
+        })
+        console.log(`product ${productId} added to cart`);
+        return updatedCart
+    }    
+    /* async addProductToCart(cartId, productId, amount){
+        let cart = await this.getCartById(cartId)
+        const Originalproduct = await productModel.findById(productId)
+        const producToAdd = cart.products.findIndex(product => product.product._id == productId)
+        if(!amount){
+            if(producToAdd < 0){
+                cart.products.push({product: productId})
+            }else{
+                cart.products[producToAdd].quantity ++
+            }
+        }else{
+            cart.products[producToAdd].quantity = amount
         }
+        console.log(`prduct ${productId} added to cart`);
+        let result = await cartModel.updateOne({_id:cartId}, cart)
+        return result
     } 
-
-
+ */
 
     async updateProducts (cartId, newProducts){
-        try {
-            const cart = await this.getCartById(cartId)
-            cart.products = newProducts
-            await cartModel.updateOne({_id:cartId}, cart)
-            return newProducts
-        } catch (error) {
-            console.log(error);
-        }
+        const cart = await this.getCartById(cartId)
+        cart.products = newProducts
+        await cartModel.updateOne({_id:cartId}, cart)
+        return newProducts        
     }
 
     async deleteProductFromCart(cartId, prodcutId){
-        try {
-            const cart = await this.getCartById(cartId)
-            const productToDelete = cart.products.find(product => product.product._id == prodcutId)
-            const index = cart.products.indexOf(productToDelete)
-            if(index < 0){
-                throw new Error("Product not found")
-            }
-            cart.products.splice(index, 1)
-            const result = cartModel.updateOne({_id:cartId},cart)
-            return result
-        } catch (error) {
-            throw new Error(error.message)
+        const cart = await this.getCartById(cartId)
+        const productToDelete = cart.products.find(product => product.product._id == prodcutId)
+        const index = cart.products.indexOf(productToDelete)
+        if(index < 0){
+            throw new HttError(HTTP_STATUS.NOT_FOUND, "Product not found")
         }
+        cart.products.splice(index, 1)
+        const result = cartModel.updateOne({_id:cartId},cart)
+        return result
     }
 
     async deleteAllProducts(cartId){
-        try {
-            const cart = await this.getCartById(cartId)
-            cart.products = []
-            const result = cartModel.updateOne({_id:cartId}, cart)
-            return result
-        } catch (error) {
-            throw new Error(error.message)
-        }
-    }
-
-
-   /*   async addProduct(cartId, productId){
-        try {
-            let cart = await this.getCartById(cartId)
-            cart.products.push({product: productId})
-            let result = await cartModel.updateOne({_id:cartId},cart)
-            return result
-            
-        } catch (error) {
-            throw new Error(error.message)
-        }
-    }  */
-
-   
+        const cart = await this.getCartById(cartId)
+        cart.products = []
+        const result = cartModel.updateOne({_id:cartId}, cart)
+        return result
+    }  
 }
-
 
 module.exports = CartManagerMongo

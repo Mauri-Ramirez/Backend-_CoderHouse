@@ -67,7 +67,7 @@ class CartManager{
         const allCarts = await this.getCarts()
         const cart = await this.getCartById(cartId)
         const cartIndex = allCarts.findIndex(item => item.id === cart.id)
-        console.log(cartIndex);
+        //console.log(cartIndex);
         if(cart.error){
             return cart.error
         }
@@ -85,7 +85,7 @@ class CartManager{
             })
         }else{
             cart.products.push({
-                id: productId,
+                product: productId,
                 quantity: 1
             })
         }

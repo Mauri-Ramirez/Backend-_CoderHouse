@@ -14,6 +14,10 @@ const session = require("express-session")
 const passport = require("passport")
 const initializePassport = require("./config/passport.config")
 
+const options = require("./config/options")
+const cookieParser = require("cookie-parser")
+
+
 
 //se inicia el servidor
 const app = express()
@@ -37,19 +41,20 @@ app.set("view engine", "handlebars")
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use('/statics', express.static(path.resolve(__dirname, "./public")))
+app.use(cookieParser())
 
 //Setear session    
  app.use(session({
     name: "session",
     secret:"contraseña123",
     cookie: {
-        maxAge: 60000 * 60,
+        maxAge: 1000 * 60 * 60 * 24,
         httpOnly: true
     },
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://mauricioandres9308:uwQzdhQJeOQZwn3a@cluster0.jmtd4ap.mongodb.net/ecommerce?retryWrites=true&w=majority",
+        mongoUrl: options.mongoDB.url,
         ttl: 4000 
     })
 }))
@@ -58,7 +63,7 @@ initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-///Routes
+///Router
 app.use("/api", apiRoutes)
 app.use("/", viewsRouter)
 
