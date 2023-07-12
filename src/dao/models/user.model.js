@@ -4,7 +4,7 @@ const mongoosePaginate = require("mongoose-paginate-v2")
 const userCollection = "users"
 
 const userSchema = new mongoose.Schema({
-    firtName: {
+    firstName: {
         type: String
     },
     lastName: {

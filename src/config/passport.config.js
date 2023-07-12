@@ -46,6 +46,7 @@ const initializePassport = () =>{
                     cart: cart._id
                 }
                 let result = await usersDao.addUser(newUser)
+                console.log(result);
                 return done(null, result)
             } catch (error) {
                 return done("Error getting user: " + error)
