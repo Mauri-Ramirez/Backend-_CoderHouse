@@ -16,12 +16,13 @@ const initializePassport = require("./config/passport.config")
 
 const options = require("./config/options")
 const cookieParser = require("cookie-parser")
+const enviroment = require("./config/enviroment.config")
 
 
 
 //se inicia el servidor
 const app = express()
-const PORT = process.env.PORT || 8080; 
+const PORT = enviroment.port 
 
 //////////
 dbConfig.connectDB()
