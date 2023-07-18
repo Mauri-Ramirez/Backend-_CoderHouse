@@ -1,9 +1,9 @@
-const UserManagerMongo = require("../dao/mongoManagers/UserManagerMongo")
+const UserMongoDao = require("../dao/mongoManagers/UserMongoDao")
 const HTTP_STATUS = require ("../constants/api.constants.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
 const HttpError = require("../utils/error.utils.js")
 
-const usersDao = new UserManagerMongo()
+const usersDao = new UserMongoDao()
 
 class UsersController{
 

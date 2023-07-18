@@ -1,5 +1,4 @@
 const { Router } = require("express")
-//const { roleMiddleware } = require("../middlewares/role.middleware")
 const SessionsController = require("../controllers/sessions.controller")
 const passportCall = require("../middlewares/passport.middleware")
 

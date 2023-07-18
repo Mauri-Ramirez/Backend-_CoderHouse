@@ -2,9 +2,9 @@ const productModel = require("../models/product.model");
 const HttError = require("../../utils/error.utils")
 const HTTP_STATUS = require("../../constants/api.constants")
 
-class ProductManagerMongo {
+class ProductMongoDao {
     
-    async getProducts({limit, page, query, sort}) {
+    async getAll({limit, page, query, sort}) {
          const filter = (query ? {category: query} : {})
             const options = {
                 sort: (sort ? {price: sort}: {}),
@@ -17,7 +17,7 @@ class ProductManagerMongo {
     }
 
    
-    async getProductById(id) {
+    async getById(id) {
         const product = await productModel.findById(id)
         if(!product){
             throw new HttError(HTTP_STATUS.NOT_FOUND, "No product matches the specified ID")
@@ -25,7 +25,7 @@ class ProductManagerMongo {
         return product
     }
 
-    async addProduct(product) {
+    async add(product) {
         await productModel.create(product)
         console.log(`${product.title} added`);
         const newProduct = {
@@ -36,13 +36,13 @@ class ProductManagerMongo {
         return newProduct
     }
 
-    async updateProduct(id, product) {
+    async updateById(id, product) {
         const updatedProduct = await productModel.updateOne({_id: id}, product)
         console.log(`${product.title ?? "product"} modified`);
         return updatedProduct
     }
 
-    async deleteProduct(id) {
+    async delete(id) {
         const deletedProduct = await productModel.deleteOne({_id: id})
         console.log(`product deleted`);
         return deletedProduct
@@ -51,4 +51,4 @@ class ProductManagerMongo {
 
 }
 
-module.exports = ProductManagerMongo
+module.exports = ProductMongoDao

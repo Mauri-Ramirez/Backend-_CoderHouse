@@ -1,6 +1,6 @@
 const { Router } = require("express")
-const productManager = require("../dao/fileManagers/ProductManager")
-const ProductManagerMongo = require("../dao/mongoManagers/ProductManagerMongo")
+const productManager = require("../dao/fileManagers/ProductFileDao")
+const ProductManagerMongo = require("../dao/mongoManagers/ProductMongoDao")
 
 const router = Router()
 const path = "products.json"

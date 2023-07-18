@@ -1,11 +1,11 @@
-const ProductManager = require("../dao/fileManagers/ProductManager")
+const ProductManager = require("../dao/fileManagers/ProductFileDao")
 const path = "products.json"
 
 
 const productManager = new ProductManager(path)
 
 const socketProduct = async (io) => {
-    const products = await productManager.getProducts()
+    const products = await productManager.getAll
     console.log(productManager);
     io.on("connection", socket => {
         console.log("Cliente conectado socket product")

@@ -1,5 +1,5 @@
 const express = require("express")
-const apiRoutes = require("./routes/app.routers")
+const apiRouter = require("./routes/app.routers")
 const path = require("path")
 const handlebars = require("express-handlebars")
 const viewsRouter = require("./routes/views.routes")
@@ -16,13 +16,14 @@ const initializePassport = require("./config/passport.config")
 
 const options = require("./config/options")
 const cookieParser = require("cookie-parser")
-const enviroment = require("./config/enviroment.config")
+const { PORT } = require("./config/enviroment.config")
+
 
 
 
 //se inicia el servidor
 const app = express()
-const PORT = enviroment.port 
+
 
 //////////
 dbConfig.connectDB()
@@ -65,7 +66,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 ///Router
-app.use("/api", apiRoutes)
+app.use("/api", apiRouter)
 app.use("/", viewsRouter)
 
 

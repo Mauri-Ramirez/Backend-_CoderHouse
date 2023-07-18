@@ -3,19 +3,23 @@ const productModel = require("../models/product.model")
 const { HttError } = require("../../utils/error.utils")
 const HTTP_STATUS = require("../../constants/api.constants")
 
-class CartManagerMongo {
+class CartMongoDao {
 
-    async getCarts() {
+    async getAll() {
         const carts = await cartModel.find()
             return carts
     }
 
-    async getCartById(id) {
-        const cart = await cartModel.findOne({_id: id}).lean()
+    async getById(id) {
+        const cart = await cartModel.findById(id).lean()
             return cart
     }
+    /* async getById(id) {
+        const cart = await cartModel.findOne({_id: id}).lean()
+            return cart
+    } */
 
-    async addCart(){
+    async add(){
         const newCart = await cartModel.create({})
             return newCart
     }
@@ -67,6 +71,7 @@ class CartManagerMongo {
         }
         cart.products.splice(index, 1)
         const result = cartModel.updateOne({_id:cartId},cart)
+        console.log(`product ${prodcutId} deleted from cart`);
         return result
     }
 
@@ -78,4 +83,4 @@ class CartManagerMongo {
     }  
 }
 
-module.exports = CartManagerMongo
+module.exports = CartMongoDao

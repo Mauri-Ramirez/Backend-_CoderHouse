@@ -5,7 +5,7 @@ const options = {
         productsFileName: "products.json"
     },
     mongoDB:{
-        url: enviroment.mongoUrl
+        url: enviroment.MONGO_URL
     }
 }
 

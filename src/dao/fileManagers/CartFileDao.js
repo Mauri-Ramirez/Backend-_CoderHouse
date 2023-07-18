@@ -2,14 +2,14 @@ const fs = require("fs/promises")
 const { existsSync } = require("fs")
 
 
-class CartManager{
+class CartFileDao{
     constructor(path){
         this.path = path
     }
 
 
      ///OBTENER CART\\\
-     async getCarts() {
+     async getAll() {
         try{
             if (!existsSync(this.path)){
                 return []
@@ -27,7 +27,7 @@ class CartManager{
     }
 
     ///TRAER CART POR SU ID\\\
-    async getCartById(id) {
+    async getById(id) {
         try{
             const savedCarts = await this.getCarts();
             const selectedCart = savedCarts.find(cart => cart.id === id)
@@ -42,7 +42,7 @@ class CartManager{
     }
 
     ///CREAR UN CART\\\ 
-    async addCart(){
+    async add(){
         try{
             const savedCarts = await this.getCarts()
             const newId = savedCarts.length > 0 ? savedCarts[savedCarts.length -1 ].id + 1 : 1
@@ -63,7 +63,7 @@ class CartManager{
 
 
     ///AGREGAR PRODUCTOS A UN CART\\\ 
-    async addProduct(cartId, productId){
+    async addProductToCart(cartId, productId){
         const allCarts = await this.getCarts()
         const cart = await this.getCartById(cartId)
         const cartIndex = allCarts.findIndex(item => item.id === cart.id)
@@ -99,4 +99,4 @@ class CartManager{
  
 }
 
-module.exports = CartManager;
+module.exports = CartFileDao;

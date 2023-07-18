@@ -1,6 +1,6 @@
 const userModel = require("../models/user.model")
 
-class UserManagerMongo {
+class UserMongoDao {
 
     async getAll() {
         const users = await userModel.find()
@@ -35,4 +35,4 @@ class UserManagerMongo {
       }
 }
 
-module.exports = UserManagerMongo
+module.exports = UserMongoDao
