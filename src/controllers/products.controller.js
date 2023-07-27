@@ -1,9 +1,12 @@
-const ProductMongoDao = require("../dao/mongoManagers/ProductMongoDao")
+//const ProductMongoDao = require("../dao/mongoManagers/ProductMongoDao")
 const HTTP_STATUS = require ("../constants/api.constants.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
 const HttpError = require("../utils/error.utils")
+const getDaos = require("../dao/factory")
 
-const productsDao = new ProductMongoDao()
+
+const { productsDao } = getDaos
+//const productsDao = new ProductMongoDao()
 
 class ProductsController{
 

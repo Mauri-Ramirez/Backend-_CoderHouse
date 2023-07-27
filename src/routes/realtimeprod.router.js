@@ -1,12 +1,12 @@
 const { Router } = require("express")
-const productManager = require("../dao/fileManagers/ProductFileDao")
-const ProductManagerMongo = require("../dao/mongoManagers/ProductMongoDao")
+//const productManager = require("../dao/fileManagers/ProductFileDao")
+//const ProductManagerMongo = require("../dao/mongoManagers/ProductMongoDao")
 
 const router = Router()
-const path = "products.json"
+//const path = "products.json"
 
-const ProductMongo= new ProductManagerMongo()
-const ProductManager = new productManager(path)
+//const ProductMongo =  ProductManagerMongo()
+//const ProductManager = new productManager(path)
 
 /*  router.get("/home", async (req, res) => {
     try {

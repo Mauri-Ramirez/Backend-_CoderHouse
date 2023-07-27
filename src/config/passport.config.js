@@ -4,15 +4,17 @@ const github = require("passport-github2")
 const jwt = require("passport-jwt")
 //const userService = require("../dao/models/user.model")
 const { createHash, isValidPassword  } = require("../utils/bcrypt.utils")
-const CartMongoDao = require("../dao/mongoManagers/CartMongoDao")
-const UserMongoDao = require("../dao/mongoManagers/UserMongoDao")
+const getDaos = require("../dao/factory")
+//const CartMongoDao = require("../dao/mongoManagers/CartMongoDao")
+//const UserMongoDao = require("../dao/mongoManagers/UserMongoDao")
 const { cookieExtractor } = require("../utils/session.utils")
 const { SECRET_KEY } = require("../constants/session.constants")
 
 const { adminName, adminPassword  } = require("./enviroment.config")
 
-const userMongoDao = new UserMongoDao()
-const cartMongoDao = new CartMongoDao()
+const { cartDao, userDao } = getDaos()
+//const userMongoDao = new UserMongoDao()
+//const cartMongoDao = new CartMongoDao()
 
 const LocalStrategy = local.Strategy
 const GitHubStrategy = github.Strategy
@@ -33,8 +35,8 @@ const initializePassport = () =>{
                 return done(null, false)
             }
             try {
-                const user = await userMongoDao.getByEmail(username)
-                const cart = await cartMongoDao.add()
+                const user = await userDao.getByEmail(username)
+                const cart = await cartDao.add()
                 if(user){
                     console.log("User already exist");
                     return done(null, false)
@@ -47,7 +49,7 @@ const initializePassport = () =>{
                     password: createHash(password),
                     cart: cart._id
                 }
-                let result = await userMongoDao.addUser(newUser)
+                let result = await userDao.addUser(newUser)
                 console.log(result);
                 return done(null, result)
             } catch (error) {
@@ -73,7 +75,7 @@ const initializePassport = () =>{
                     }
                     return done(null, user)
                 }
-                const user = await userMongoDao.getByEmail(username)
+                const user = await userDao.getByEmail(username)
                 if(!user){
                     return done(null, false, "user not found")
                 }
@@ -116,9 +118,9 @@ const initializePassport = () =>{
         async (accessToken, refreshToken, profile, done)=>{
             const userData = profile._json
             try {
-                const user = await userMongoDao.getByEmail(userData.email)
+                const user = await userDao.getByEmail(userData.email)
                 if(!user){
-                    const cart = await cartMongoDao.add()
+                    const cart = await cartDao.add()
                     const newUser = {
                         firstName: userData.name.split(" ")[0],
                         lastName: userData.name.split(" ")[1],
@@ -131,7 +133,7 @@ const initializePassport = () =>{
                         githubLogin: userData.login,
                         cart: cart.id
                     }
-                    const response = await userMongoDao.addUser(newUser)
+                    const response = await userDao.addUser(newUser)
                     const finalUser = response._doc
                     done(null, finalUser)
                     return
@@ -163,7 +165,7 @@ passport.serializeUser((user, done) =>{
 })
 
 passport.deserializeUser(async (id, done) =>{
-    const user = await userMongoDao.getById(id)
+    const user = await userDao.getById(id)
     done(null, user)
 }) 
 

@@ -1,8 +1,10 @@
-const ProductMongoDao = require("../dao/mongoManagers/ProductMongoDao")
-const CartMongoDao = require("../dao/mongoManagers/CartMongoDao")
+//const ProductMongoDao = require("../dao/mongoManagers/ProductMongoDao")
+//const CartMongoDao = require("../dao/mongoManagers/CartMongoDao")
+const getDaos = require ("../dao/factory")
 
-const productMongoDao = new ProductMongoDao()
-const cartMongoDao = new CartMongoDao()
+const { productsDao, cartDao } = getDaos()
+//const productMongoDao = new ProductMongoDao()
+//const cartMongoDao = new CartMongoDao()
 
 class ViewsController{
 
@@ -25,7 +27,7 @@ class ViewsController{
     static async products(req, res, next) {
         const user = req.user
         try {
-            const products = await productMongoDao.getAll(req.query)
+            const products = await productsDao.getAll(req.query)
             res.render("index",{
                 title: "E-commerce",
                 style:"index.css",
@@ -45,7 +47,7 @@ class ViewsController{
         const cartId = req.params.cid
         const user = req.user
         try {
-            const cart = await cartMongoDao.getById(cartId)
+            const cart = await cartDao.getById(cartId)
             res.render("cart", {
                 title: "Cart",
                 style:"cart.css",

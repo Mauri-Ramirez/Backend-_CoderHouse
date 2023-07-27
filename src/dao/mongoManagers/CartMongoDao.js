@@ -56,14 +56,14 @@ class CartMongoDao {
  */
 
     async updateProducts (cartId, newProducts){
-        const cart = await this.getCartById(cartId)
+        const cart = await this.getById(cartId)
         cart.products = newProducts
         await cartModel.updateOne({_id:cartId}, cart)
         return newProducts        
     }
 
     async deleteProductFromCart(cartId, prodcutId){
-        const cart = await this.getCartById(cartId)
+        const cart = await this.getById(cartId)
         const productToDelete = cart.products.find(product => product.product._id == prodcutId)
         const index = cart.products.indexOf(productToDelete)
         if(index < 0){
@@ -76,7 +76,7 @@ class CartMongoDao {
     }
 
     async deleteAllProducts(cartId){
-        const cart = await this.getCartById(cartId)
+        const cart = await this.getById(cartId)
         cart.products = []
         const result = cartModel.updateOne({_id:cartId}, cart)
         return result
