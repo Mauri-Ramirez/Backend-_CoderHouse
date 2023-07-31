@@ -1,18 +1,15 @@
-//const CartMongoDao = require("../dao/mongoManagers/CartMongoDao")
 const HTTP_STATUS = require("../constants/api.constants.js")
+const CartsService = require ("../services/carts.service.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
-const { HttpError } = require("../utils/error.utils")
-const getDaos = require("../dao/factory")
 
-const { cartDao } = getDaos()
-//const cartsDao = new CartMongoDao()
+const cartsService = new CartsService
 
 class CartsController{
 
     static async getAll(req, res, next){        
         try {
-            const cart = await cartDao.getAll()
-            const response = apiSuccessResponse(cart)
+            const carts = await cartsService.getCarts()
+            const response = apiSuccessResponse(carts)
             res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
             next(error)
@@ -22,10 +19,7 @@ class CartsController{
     static async getById(req, res, next) {
         const { cid } = req.params
         try {
-            const cart = await cartDao.getById(cid)
-            if(!cart){
-                throw new HttpError(HTTP_STATUS.NOT_FOUND, "Cart not found")
-            }
+            const cart = await cartsService.getCartById(cid)
             const response = apiSuccessResponse(cart)
             res.status(HTTP_STATUS.OK).json(response) 
         } catch (error) {
@@ -33,9 +27,9 @@ class CartsController{
         }
     }
 
-    static async addCart(req,res,next) {
+    static async addCart(req, res, next) {
         try {
-            const addCart = await cartDao.add()
+            const addCart = await cartsService.createCart()
             const response = apiSuccessResponse(addCart)
             res.status(HTTP_STATUS.CREATED).json(response)
         } catch (error) {
@@ -47,46 +41,46 @@ class CartsController{
         try {
             const {cid, pid} = req.params
             const amount = +req.body?.amount || 1
-            const addProduct = await cartDao.addProductToCart(cid, pid, amount)
-            const response = apiSuccessResponse(addProduct)
+            const addedProduct = await cartsService.addProductToCart(cid, pid, amount)
+            const response = apiSuccessResponse(addedProduct)
             res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
             next(error)
         }
     }
 
-    static async updateProducts(req, res, next){
+ /*    static async updateProducts(req, res, next){
         const { cid } = req.params
         const newProducts = req.body
         try {
-            const updatedCart = await cartDao.updateProducts(cid, newProducts)
+            const updatedCart = await cartsDao.updateProducts(cid, newProducts)
             const response = apiSuccessResponse(updatedCart)
             res.status(HTTP_STATUS.OK).json(response)
             
         } catch (error) {
             next(error)
         }
-    }   
+    }    */
     
-    static async updateQuantity(req, res, next){
+   /*  static async updateQuantity(req, res, next){
         const {cid, pid} = req.params
         const amount = req.body.quantity
         if(!amount){
             throw new HttpError(HTTP_STATUS.BAD_REQUEST, 'An amount of product must be provided')
         }
         try {
-            const updateProduct = await cartDao.addProductToCart(cid, pid, amount)
+            const updateProduct = await cartsDao.addProductToCart(cid, pid, amount)
             const response = apiSuccessResponse(updateProduct)
             res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
             next(error)
         }
-    }
+    } */
     
-    static async removeProducts(req, res, next){
+    static async removeProduct(req, res, next){
         const {cid, pid} = req.params
         try {
-            const deletedProduct = await cartDao.deleteProductFromCart(cid, pid)
+            const deletedProduct = await cartsService.deleteProduct(cid, pid)
             const response = apiSuccessResponse(deletedProduct)
             res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
@@ -95,10 +89,10 @@ class CartsController{
     }
 
     static async clearCart(req, res, next){
-        const { cid }= req.params
+        const { cid } = req.params
         try {
-            const result = await cartDao.deleteAllProducts(cid)
-            const response = apiSuccessResponse(result)
+            const emptyCart = await cartsService.clearCart(cid)
+            const response = apiSuccessResponse(emptyCart)
             res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
             next(error)

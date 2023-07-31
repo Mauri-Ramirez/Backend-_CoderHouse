@@ -16,7 +16,6 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        index: true
     },
     price: {
         type: Number,
@@ -32,12 +31,10 @@ const productSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean,
-        required: true,
         default: true
     },
     thumbnails:{
         type: [],
-        required: true,
         default: []
     }
 })

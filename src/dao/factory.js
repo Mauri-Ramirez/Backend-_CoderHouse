@@ -1,6 +1,7 @@
 const { PERSISTENCE } = require("../config/enviroment.config")
+const dbconfig = require("../config/dbConfig")
 
-let cartDao,  productsDao, userDao
+let cartsDao, productsDao, usersDao
 
 console.log(`Using ${PERSISTENCE} as persistence method`);
 
@@ -9,18 +10,19 @@ switch(PERSISTENCE){
     case "FILE": {
         const CartFileDao = require("./fileManagers/CartFileDao")
         const ProductFileDao = require("./fileManagers/ProductFileDao")
-        cartDao = new CartFileDao()
+        cartsDao = new CartFileDao()
         productsDao = new ProductFileDao()
         break;
     }
 
     case "MONGO": {
+        dbconfig.connectDB()
         const CartMongoDao = require("./mongoManagers/CartMongoDao")
         const { ProductMongoDao } = require("./mongoManagers/ProductMongoDao")
         const UserMongoDao = require("./mongoManagers/UserMongoDao")
-        cartDao = new CartMongoDao()
+        cartsDao = new CartMongoDao()
         productsDao = new ProductMongoDao()
-        userDao = new UserMongoDao()
+        usersDao = new UserMongoDao()
         break;
     }
  
@@ -30,11 +32,11 @@ switch(PERSISTENCE){
 }
 
 const getDaos = () => {
-    console.log(cartDao);
+    console.log(cartsDao);
     return {
-        cartDao,
+        cartsDao,
         productsDao, 
-        userDao
+        usersDao
     }
 }
 

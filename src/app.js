@@ -6,7 +6,7 @@ const viewsRouter = require("./routes/views.routes")
 const realtimeProd = require("./routes/realtimeprod.router")
 const { Server } = require("socket.io")
 const { socketProduct } = require("./utils/socketProduct")
-const dbConfig = require("./config/dbConfig")
+//const dbConfig = require("./config/dbConfig")
 const { socketChat } = require("./utils/socketChat")
 
 const MongoStore = require("connect-mongo")
@@ -26,7 +26,7 @@ const app = express()
 
 
 //////////
-dbConfig.connectDB()
+//dbConfig.connectDB()
 /////////
 
 
