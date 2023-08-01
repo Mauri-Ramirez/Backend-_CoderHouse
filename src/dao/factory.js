@@ -1,7 +1,7 @@
 const { PERSISTENCE } = require("../config/enviroment.config")
 const dbconfig = require("../config/dbConfig")
 
-let cartsDao, productsDao, usersDao
+let cartsDao, productsDao, usersDao, ticketsDao
 
 console.log(`Using ${PERSISTENCE} as persistence method`);
 
@@ -20,9 +20,11 @@ switch(PERSISTENCE){
         const CartMongoDao = require("./mongoManagers/CartMongoDao")
         const { ProductMongoDao } = require("./mongoManagers/ProductMongoDao")
         const UserMongoDao = require("./mongoManagers/UserMongoDao")
+        const { TicketMongoDao } = require("./mongoManagers/TicketMongoDao.js")
         cartsDao = new CartMongoDao()
         productsDao = new ProductMongoDao()
         usersDao = new UserMongoDao()
+        ticketsDao = new TicketMongoDao()
         break;
     }
  
@@ -36,7 +38,8 @@ const getDaos = () => {
     return {
         cartsDao,
         productsDao, 
-        usersDao
+        usersDao,
+        ticketsDao
     }
 }
 

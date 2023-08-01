@@ -1,16 +1,14 @@
 <div>
-    <div>
     <div class="welcome-box z-depth-2">
         <h3 class="welcome-title">Welcome {{user.firstName}} {{user.lastName}} ({{user.role}})</h3>
         <p class="user-email">{{user.email}}</p>
         {{#if user.age}}
-        <p class="user-age">{{user.age}} years old</p>
+            <p class="user-age">{{user.age}} years old</p>
         {{/if}}
         {{#if user.githubLogin}}
             <p>Register with Github</p>
         {{/if}}    
     </div>
-    <div>
     <h1 class="main-title">Our products</h1>
     <button class="see-cart-button" onclick="seeCart(event)" id={{user.cart}}>See Cart</button>
     <div id="product-list-container">
@@ -27,13 +25,20 @@
                     <p id="no-image">no image</p>
                 {{/if}}
                 <p class="stock-tag">{{stock}} restantes</p>
-                <button id="add-to-cart-button" onclick="addToCart(event)">Add to cart</button>
+                <div>
+                    <button  onclick="decreaseAmount(event)">-</button>
+                    <p class="counter">1</p>
+                    <button  onclick="increaseAmount(event)">+</button>
+                </div>
+                 {{#if status}}
+                    <button id="add-to-cart-button"  onclick="addToCart(event)">Add to cart</button>
+                {{else}}
+                    <button id="add-to-cart-button"  onclick="addToCart(event)" disabled>Add to cart</button>
+                {{/if}}
             </div>
         {{/each}}
     </div>
 </div>
-</div>
-<div>
 
    <button><a href={{prevLink}}>Anterior</a></button>
     <button><a href={{nextLing}}>Siguiente</a></button>

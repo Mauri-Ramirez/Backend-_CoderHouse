@@ -6,7 +6,6 @@ const viewsRouter = require("./routes/views.routes")
 const realtimeProd = require("./routes/realtimeprod.router")
 const { Server } = require("socket.io")
 const { socketProduct } = require("./utils/socketProduct")
-//const dbConfig = require("./config/dbConfig")
 const { socketChat } = require("./utils/socketChat")
 
 const MongoStore = require("connect-mongo")
@@ -19,15 +18,8 @@ const cookieParser = require("cookie-parser")
 const { PORT } = require("./config/enviroment.config")
 
 
-
-
 //se inicia el servidor
 const app = express()
-
-
-//////////
-//dbConfig.connectDB()
-/////////
 
 
 //hbs---templates--------------------------------

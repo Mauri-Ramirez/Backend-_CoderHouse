@@ -10,9 +10,18 @@ const removeProduct = async (event) =>{
 
 const clearCart = async (event) =>{
     const cartId = event.target.parentNode.getAttribute("id")
-    await fetch(`api/carts/${cartId}`,{
+    await fetch(`/api/carts/${cartId}`,{
         method: "delete"
     })
     .then(()=>alert("Cart cleared"))
+    .then(()=>window.location.href = window.location.href)
+}
+
+const purchase = async(event) =>{
+    const cartId = event.target.parentNode.getAttribute("id")
+    await fetch(`/api/carts/${cartId}/purchase`,{
+        method: "put"
+    })
+    .then(()=>alert("Thanks for buying"))
     .then(()=>window.location.href = window.location.href)
 }

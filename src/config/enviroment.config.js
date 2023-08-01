@@ -7,5 +7,7 @@ module.exports = {
     MONGO_URL: process.env.MONGO_URL,
     ADMIN_NAME: process.env.ADMIN_NAME,
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
-    PERSISTENCE: process.env.PERSISTENCE
+    PERSISTENCE: process.env.PERSISTENCE,
+    SECRET_KEY: process.env.SECRET_KEY,
+    SESSION_KEY: process.env.SESSION_KEY
 }

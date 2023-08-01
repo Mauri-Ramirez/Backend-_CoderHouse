@@ -9,7 +9,7 @@ const getDaos = require("../dao/factory")
 //const UserMongoDao = require("../dao/mongoManagers/UserMongoDao")
 const { cookieExtractor } = require("../utils/session.utils")
 const { SECRET_KEY } = require("../constants/session.constants")
-const { adminName, adminPassword  } = require("./enviroment.config")
+const { ADMIN_NAME, ADMIN_PASSWORD } = require("./enviroment.config")
 
 const { cartsDao, usersDao } = getDaos()
 
@@ -62,12 +62,12 @@ const initializePassport = () =>{
         {usernameField: "email"},
         async(username, password, done) =>{
             try {
-                if(username === adminName && password === adminPassword){
+                if(username === ADMIN_NAME && password === ADMIN_PASSWORD){
                     const user = {
                         firstName: "Admin",
                         lastName: "Coder",
-                        email: adminName,
-                        password: adminPassword,
+                        email: ADMIN_NAME,
+                        password: ADMIN_PASSWORD,
                         role: "admin"
                     }
                     return done(null, user)

@@ -1,8 +1,11 @@
+const { response } = require("express")
 const HTTP_STATUS = require("../constants/api.constants.js")
 const CartsService = require ("../services/carts.service.js")
+const TicketsService = require("../services/tickets.service.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
 
-const cartsService = new CartsService
+const cartsService = new CartsService()
+const ticketService = new TicketsService()
 
 class CartsController{
 
@@ -38,6 +41,7 @@ class CartsController{
     }
 
     static async addProduct(req, res, next){
+        console.log("Hola addproduct");
         try {
             const {cid, pid} = req.params
             const amount = +req.body?.amount || 1
@@ -48,35 +52,7 @@ class CartsController{
             next(error)
         }
     }
-
- /*    static async updateProducts(req, res, next){
-        const { cid } = req.params
-        const newProducts = req.body
-        try {
-            const updatedCart = await cartsDao.updateProducts(cid, newProducts)
-            const response = apiSuccessResponse(updatedCart)
-            res.status(HTTP_STATUS.OK).json(response)
-            
-        } catch (error) {
-            next(error)
-        }
-    }    */
-    
-   /*  static async updateQuantity(req, res, next){
-        const {cid, pid} = req.params
-        const amount = req.body.quantity
-        if(!amount){
-            throw new HttpError(HTTP_STATUS.BAD_REQUEST, 'An amount of product must be provided')
-        }
-        try {
-            const updateProduct = await cartsDao.addProductToCart(cid, pid, amount)
-            const response = apiSuccessResponse(updateProduct)
-            res.status(HTTP_STATUS.OK).json(response)
-        } catch (error) {
-            next(error)
-        }
-    } */
-    
+ 
     static async removeProduct(req, res, next){
         const {cid, pid} = req.params
         try {
@@ -96,6 +72,19 @@ class CartsController{
             res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
             next(error)
+        }
+    }
+
+    static async purchase(req, res, next){
+        const  { cid } = req.params
+        try {
+            const cart = await cartsService.getCartById(cid)
+            const payload = cart.products
+            const ticket = await ticketService.createTicker(cid, payload)
+            const response = apiSuccessResponse(ticket)
+            res.status(HTTP_STATUS.OK).json(response)
+        } catch (error) {
+            next(error)            
         }
     }
 

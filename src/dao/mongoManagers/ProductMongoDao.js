@@ -1,6 +1,6 @@
 const productModel = require("../models/product.model");
-const HttError = require("../../utils/error.utils")
-const HTTP_STATUS = require("../../constants/api.constants")
+//const HttError = require("../../utils/error.utils")
+//const HTTP_STATUS = require("../../constants/api.constants")
 
 class ProductMongoDao {
     
@@ -38,31 +38,30 @@ class ProductMongoDao {
     } */
 
    
-    async getById(id) {
-        const product = await productModel.findById(id)
+    async getById(pid) {
+        const product = await productModel.findById(pid)
         return product
     }
 
-    async add(product) {
-        await productModel.create(product)
-        console.log(`${product.title} added`);
+    async add(payload) {
+        await productModel.create(payload)
+        console.log(`${payload.title} added`);
         const newProduct = {
-            status: product.status || true,
-            thumbnails: product.thumbnails || [],
-            ...product
+            status: payload.status || true,
+            thumbnails: payload.thumbnails || [],
+            ...payload
         }
         return newProduct
     }
 
-    async updateById(id, product) {
-        console.log(product);
-        const updatedProduct = await productModel.updateOne({_id: id}, product)
+    async updateById(pid, payload) {
+        const updatedProduct = await productModel.updateOne({_id: pid}, payload)
         console.log(`${product.title ?? "product"} modified`);
         return updatedProduct
     }
 
-    async delete(id) {
-        const deletedProduct = await productModel.deleteOne({_id: id})
+    async delete(pid) {
+        const deletedProduct = await productModel.deleteOne({_id: pid})
         console.log(`product deleted`);
         return deletedProduct
     }
