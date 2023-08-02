@@ -8,7 +8,7 @@ const getDaos = require("../dao/factory")
 //const CartMongoDao = require("../dao/mongoManagers/CartMongoDao")
 //const UserMongoDao = require("../dao/mongoManagers/UserMongoDao")
 const { cookieExtractor } = require("../utils/session.utils")
-const { SECRET_KEY } = require("../constants/session.constants")
+const { SECRET_KEY } = require("../config/enviroment.config")
 const { ADMIN_NAME, ADMIN_PASSWORD } = require("./enviroment.config")
 
 const { cartsDao, usersDao } = getDaos()
@@ -68,7 +68,8 @@ const initializePassport = () =>{
                         lastName: "Coder",
                         email: ADMIN_NAME,
                         password: ADMIN_PASSWORD,
-                        role: "admin"
+                        role: "admin",
+                        cart: "64c9505ccaa4e771fc74cb12"
                     }
                     return done(null, user)
                 }
@@ -87,24 +88,6 @@ const initializePassport = () =>{
         }
     ))
 
- /*     passport.use("login", new LocalStrategy(
-        {usernameField: "email"},
-        async(username, password, done) =>{
-            try {
-                const user = await usersDao.getByEmail(username)
-                if(!user){
-                    return done(null, false, "user not found")
-                }
-                if(!isValidPassword(user, password)){
-                    return done(null, false, "wrong user or password")
-                }
-                return done(null, user)
-            } catch (error) {
-                return done(error)
-            }
-        }
-    ))
-  */
     //Github Strategy
     passport.use(
         new GitHubStrategy({
@@ -149,7 +132,16 @@ const initializePassport = () =>{
         secretOrKey: SECRET_KEY
     }, async(jwt_payload, done)=>{
         try {
-            return done(null, jwt_payload)
+            newPayload = {
+                _id: jwt_payload._id,
+                firstName: jwt_payload.firstName,
+                lastName: jwt_payload.lastName,
+                email: jwt_payload.email,
+                age: jwt_payload.age,
+                role: jwt_payload.role,
+                cart: jwt_payload.cart
+            }
+            return done(null, newPayload)
         } catch (error) {
             return done(error)
         }

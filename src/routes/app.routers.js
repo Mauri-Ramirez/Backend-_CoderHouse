@@ -5,6 +5,8 @@ const chatRoutes = require("./chat.routes")
 const sessionRoutes = require("./session.routes")
 const userRoutes = require("./users.routes")
 const errorMiddleware = require("../middlewares/error.middleware")
+//const { userMiddleware } = require("../middlewares/role.middleware.js")
+//const passportCall = require("../middlewares/passport.middleware.js")
 
 const router = Router();
 
