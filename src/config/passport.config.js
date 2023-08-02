@@ -2,14 +2,12 @@ const passport = require("passport")
 const local = require("passport-local")
 const github = require("passport-github2")
 const jwt = require("passport-jwt")
-//const userService = require("../dao/models/user.model")
 const { createHash, isValidPassword  } = require("../utils/bcrypt.utils")
 const getDaos = require("../dao/factory")
-//const CartMongoDao = require("../dao/mongoManagers/CartMongoDao")
-//const UserMongoDao = require("../dao/mongoManagers/UserMongoDao")
 const { cookieExtractor } = require("../utils/session.utils")
 const { SECRET_KEY } = require("../config/enviroment.config")
 const { ADMIN_NAME, ADMIN_PASSWORD } = require("./enviroment.config")
+const { AddUserDTO, GetUserDTO } = require("../dao/DTOs/users.dto.js")
 
 const { cartsDao, usersDao } = getDaos()
 
@@ -35,8 +33,9 @@ const initializePassport = () =>{
                 const user = await usersDao.getByEmail(username)
                 const cart = await cartsDao.add()
                 if(user){
-                    console.log("User already exist");
-                    return done(null, false)
+                    const message = "User already exist"
+                    console.log(message);
+                    return done(null, false, {message})
                 }
                 const newUser = {
                     firstName,
@@ -46,8 +45,9 @@ const initializePassport = () =>{
                     password: createHash(password),
                     cart: cart._id
                 }
-                let result = await usersDao.addUser(newUser)
-                console.log(result);
+                const userPayload = new AddUserDTO(newUser)
+                let result = await usersDao.addUser(userPayload)
+                //console.log(result);
                 return done(null, result)
             } catch (error) {
                 return done("Error getting user: " + error)
@@ -64,8 +64,8 @@ const initializePassport = () =>{
             try {
                 if(username === ADMIN_NAME && password === ADMIN_PASSWORD){
                     const user = {
-                        firstName: "Admin",
-                        lastName: "Coder",
+                        first_name: "Admin",
+                        last_name: "Coder",
                         email: ADMIN_NAME,
                         password: ADMIN_PASSWORD,
                         role: "admin",
@@ -113,7 +113,8 @@ const initializePassport = () =>{
                         githubLogin: userData.login,
                         cart: cart.id
                     }
-                    const response = await usersDao.addUser(newUser)
+                    const userPayload = new AddUserDTO(newUser)
+                    const response = await usersDao.addUser(userPayload)
                     const finalUser = response._doc
                     done(null, finalUser)
                     return
@@ -132,16 +133,8 @@ const initializePassport = () =>{
         secretOrKey: SECRET_KEY
     }, async(jwt_payload, done)=>{
         try {
-            newPayload = {
-                _id: jwt_payload._id,
-                firstName: jwt_payload.firstName,
-                lastName: jwt_payload.lastName,
-                email: jwt_payload.email,
-                age: jwt_payload.age,
-                role: jwt_payload.role,
-                cart: jwt_payload.cart
-            }
-            return done(null, newPayload)
+            const userPayload = new GetUserDTO(jwt_payload)
+            return done(null, userPayload)
         } catch (error) {
             return done(error)
         }

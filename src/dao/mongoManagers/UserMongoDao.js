@@ -24,8 +24,9 @@ class UserMongoDao {
     }
 
     async updateUser(uid, payload){
-        const updatedUser = await userModel.findByIdAndUpdate((uid, payload, { new: true }))
-        console.log('User updated')
+        console.log(payload)
+        const updatedUser = await userModel.findByIdAndUpdate(uid, {$set: payload})
+        console.log("User updated");
         return updatedUser
     }
 

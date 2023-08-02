@@ -1,6 +1,7 @@
 const getDaos = require("../dao/factory")
 const HTTP_STATUS = require ("../constants/api.constants.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
+const { AddUserDTO, GetUserDTO, UpdateUserDTO } = require("../dao/DTOs/users.dto")
 const HttpError = require("../utils/error.utils.js")
 const UsersService = require("../services/users.service.js")
 
@@ -13,18 +14,23 @@ class UsersController{
     static async getAll(req, res, next) {
         try {
             const users = await usersService.getAll()
-            const response = apiSuccessResponse(users)
+            const userPayload = []
+            users.forEach(user => {
+                userPayload.push(new GetUserDTO(user))
+            });
+            const response = apiSuccessResponse(userPayload)
             return res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
             next(error)
         }
     }
-//x
+
     static async getById(req, res, next) {
         const { uid } = req.params
         try {
             const user = await usersService.getById(uid)
-            const response = apiSuccessResponse(user)
+            const userPayload = new GetUserDTO(user)
+            const response = apiSuccessResponse(userPayload)
             return res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
             next(error)
@@ -35,8 +41,9 @@ class UsersController{
         const payload = req.body
         const { file } = req
         try {
-            const newUser = await usersService.createUser(payload, file)
-            const response = apiSuccessResponse(addUser)
+            const userPayload = new AddUserDTO(payload)
+            const newUser = await usersService.createUser(userPayload, file)
+            const response = apiSuccessResponse(newUser)
             return res.status(HTTP_STATUS.CREATED).json(response)
         } catch (error) {
             next(error)
@@ -47,10 +54,9 @@ class UsersController{
         const { uid } = req.params
         const payload = req.body
         try {
+            const userPayload = new UpdateUserDTO(payload)
+            console.log(userPayload);
             const updatedUser = await usersService.updateUser(uid, payload)
-            if (!updatedUser) {
-                throw new HttpError(404, "User not found");
-            }
             const response = apiSuccessResponse(updatedUser)
             return res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {

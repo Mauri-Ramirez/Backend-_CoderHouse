@@ -1,6 +1,9 @@
-const getDaos = require ("../dao/factory")
+const getDaos = require("../dao/factory")
+const ProductsService = require("../services/products.service.js")
 
 const { productsDao, cartsDao } = getDaos()
+
+const productsService = new ProductsService()
 
 class ViewsController{
 
@@ -23,7 +26,7 @@ class ViewsController{
     static async products(req, res, next) {
         const user = req.user
         try {
-            const products = await productsDao.getAll(req.query)
+            const products = await productsService.getProducts(req.query)
             res.render("index",{
                 title: "E-commerce",
                 style:"index.css",
@@ -47,7 +50,6 @@ class ViewsController{
             res.render("cart", {
                 title: "Cart",
                 style:"cart.css",
-                products: cart.products,
                 user,
                 cart
             })

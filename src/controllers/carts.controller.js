@@ -1,8 +1,8 @@
-const { response } = require("express")
 const HTTP_STATUS = require("../constants/api.constants.js")
 const CartsService = require ("../services/carts.service.js")
 const TicketsService = require("../services/tickets.service.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
+const HttpError = require("../utils/error.utils.js")
 
 const cartsService = new CartsService()
 const ticketService = new TicketsService()
@@ -76,11 +76,12 @@ class CartsController{
     }
 
     static async purchase(req, res, next){
+        const purchaser = req.user
         const  { cid } = req.params
         try {
             const cart = await cartsService.getCartById(cid)
             const payload = cart.products
-            const ticket = await ticketService.createTicker(cid, payload)
+            const ticket = await ticketService.createTicker(cid, payload, purchaser)
             const response = apiSuccessResponse(ticket)
             res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
