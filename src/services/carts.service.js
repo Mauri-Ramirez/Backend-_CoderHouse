@@ -46,15 +46,17 @@ class CartsService {
         let addedProduct
         if(existingProduct){
             cart.products[existingProductIndex].quantity += amount
+            addedProduct = await cartsDao.updateCart(cid, cart)
+        }else{
             addedProduct = await cartsDao.addProductToCart(cid, pid, amount)
         }
-        return addedProduct
         //IMPLEMENTAR ESTO CUANDO SE CONFIRMA LA COMPRA
-        // const updatedProduct = {
-        //     ...product._doc,
-        //     stock: product.stock - amount
-        // }
-        // await productsDao.updateById(pid, updatedProduct)
+        const updatedProduct = {
+            ...product._doc,
+            stock: product.stock - amount
+        }
+        await productsDao.updateById(pid, updatedProduct)
+        return addedProduct
 
     }
 
@@ -62,11 +64,11 @@ class CartsService {
         if(!cid || !pid){
             throw new HttpError("Missing params", HTTP_STATUS.BAD_REQUEST)
         }
-        const product = await productsDao.getCartById(pid)
+        const product = await productsDao.getById(pid)
         if(!product){
             throw new HttpError("Product not found", HTTP_STATUS.NOT_FOUND)
         }
-        const cart = await productsDao.getById(cid)
+        const cart = await cartsDao.getById(cid)
         if(!cart){
             throw new HttpError("Cart not found", HTTP_STATUS.NOT_FOUND)
         }
@@ -79,7 +81,7 @@ class CartsService {
         if(!cid){
             throw new HttpError("Please specify a cart ID", HTTP_STATUS.BAD_REQUEST)
         }
-        const cart = await productsDao.getById(cid)
+        const cart = await cartsDao.getById(cid)
         if(!cart){
             throw new HttpError("Cart not found", HTTP_STATUS.NOT_FOUND)
         }

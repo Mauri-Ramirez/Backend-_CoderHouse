@@ -1,19 +1,21 @@
 <div>
     <div class="welcome-box z-depth-2">
-        <h3 class="welcome-title">Welcome {{user.firstName}} {{user.lastName}} ({{user.role}})</h3>
-        <p class="user-email">{{user.email}}</p>
-        {{#if user.age}}
-            <p class="user-age">{{user.age}} years old</p>
-        {{/if}}
-        {{#if user.githubLogin}}
-            <p>Register with Github</p>
-        {{/if}}    
+        <div class="info-section">
+            <h3 class="welcome-title">Welcome {{user.firstName}} {{user.lastName}} <span class="user-role">({{user.role}})</span></h3>
+            <p class="user-email">{{user.email}}</p>
+            {{#if user.age}}
+                <p class="user-age">{{user.age}} years old</p>
+            {{/if}}
+            {{#if user.githubLogin}}
+                <p class="github-user-tag">(Registered with Github)</p>
+            {{/if}}
+        </div>
     </div>
     <h1 class="main-title">Our products</h1>
-    <button class="see-cart-button" onclick="seeCart(event)" id={{user.cart}}>See Cart</button>
+    <button class="see-cart-button waves-effect waves-light btn-large indigo" onclick="seeCart(event)" id={{user.cart}}>See Cart</button>
     <div id="product-list-container">
         {{#each products}}
-            <div class="product-item" id={{_id}} >
+            <div class="product-item" id={{id}} >
                 <p id="item-title">{{title}}</p>
                 <p>{{description}}</p>
                 <p class="price-tag">${{price}}</p>
@@ -24,23 +26,25 @@
                 {{else}}
                     <p id="no-image">no image</p>
                 {{/if}}
-                <p class="stock-tag">{{stock}} restantes</p>
-                <div>
-                    <button  onclick="decreaseAmount(event)">-</button>
-                    <p class="counter">1</p>
-                    <button  onclick="increaseAmount(event)">+</button>
-                </div>
-                 {{#if status}}
-                    <button id="add-to-cart-button"  onclick="addToCart(event)">Add to cart</button>
-                {{else}}
-                    <button id="add-to-cart-button"  onclick="addToCart(event)" disabled>Sold out</button>
+                {{#if stock}}
+                    <p class="stock-tag">{{stock}} in stock</p>
                 {{/if}}
+                <div class="button-section-container">
+                    <div class="item-counter-container">
+                        <button class="less-button-counter" onclick="decreaseAmount(event)">-</button>
+                        <p class="counter">1</p>
+                        <button class="more-button-counter" onclick="increaseAmount(event)">+</button>
+                    </div>
+                    {{#if status}}
+                        <button id="add-to-cart-button" class="waves-effect waves-light btn-small" onclick="addToCart(event)">Add to cart</button>
+                    {{else}}
+                        <button id="add-to-cart-button" class="waves-effect waves-light btn-small" onclick="addToCart(event)" disabled>Sold out</button>
+                    {{/if}}
+                </div>
             </div>
         {{/each}}
     </div>
 </div>
 
-   <button><a href={{prevLink}}>Anterior</a></button>
-    <button><a href={{nextLing}}>Siguiente</a></button>
-</div>
+
 <script src="/statics/js/index.js"></script>

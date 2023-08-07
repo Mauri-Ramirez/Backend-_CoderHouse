@@ -35,4 +35,10 @@ router.get("/cart/:cid",
     ViewsController.cart
 )
 
+router.get("/ticket/:tid",
+    authMiddleware,
+    passportCall("jwt"),
+    ViewsController.ticket
+)
+
 module.exports = router

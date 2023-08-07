@@ -76,7 +76,7 @@ class CartFileDao{
             const updatedCart = cart.products.map(prod => {
                 if(prod.id === productId){
                     return {
-                        id: prod.id,
+                        product: prod.id,
                         quantity: ++prod.quantity 
                     }
                 }else{

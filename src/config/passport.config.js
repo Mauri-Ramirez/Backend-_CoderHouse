@@ -5,7 +5,7 @@ const jwt = require("passport-jwt")
 const { createHash, isValidPassword  } = require("../utils/bcrypt.utils")
 const getDaos = require("../dao/factory")
 const { cookieExtractor } = require("../utils/session.utils")
-const { SECRET_KEY } = require("../config/enviroment.config")
+const { SECRET_KEY } = require("../config/enviroment.config.js")
 const { ADMIN_NAME, ADMIN_PASSWORD } = require("./enviroment.config")
 const { AddUserDTO, GetUserDTO } = require("../dao/DTOs/users.dto.js")
 
@@ -43,7 +43,7 @@ const initializePassport = () =>{
                     email,
                     age,
                     password: createHash(password),
-                    cart: cart._id
+                    cart: cart._id,
                 }
                 const userPayload = new AddUserDTO(newUser)
                 let result = await usersDao.addUser(userPayload)
@@ -111,7 +111,7 @@ const initializePassport = () =>{
                         email: userData.email,
                         password: " ",
                         githubLogin: userData.login,
-                        cart: cart.id
+                        cart: cart._id
                     }
                     const userPayload = new AddUserDTO(newUser)
                     const response = await usersDao.addUser(userPayload)
@@ -133,6 +133,7 @@ const initializePassport = () =>{
         secretOrKey: SECRET_KEY
     }, async(jwt_payload, done)=>{
         try {
+            console.log(jwt_payload);
             const userPayload = new GetUserDTO(jwt_payload)
             return done(null, userPayload)
         } catch (error) {

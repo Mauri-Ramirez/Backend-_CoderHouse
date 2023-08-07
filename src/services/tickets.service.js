@@ -1,14 +1,20 @@
 const HTTP_STATUS = require("../constants/api.constants.js")
 const getDaos = require("../dao/factory.js")
+const { UpdateProductDTO } = require("../dao/DTOs/products.dto.js")
+const { GetTicketDTO, AddTicketDTO } =require("../dao/DTOs/ticket.dto.js")
 const HttpError = require("../utils/error.utils.js")
 
 const { ticketsDao, cartsDao, productsDao } = getDaos()
 
 class TicketsService{
 
-    async getTickets(){
+    async TicketsService(){
         const tickets = await ticketsDao.getAll()
-        return tickets
+        const ticketsPayloadDTO = []
+        tickets.forEach(ticket => {
+            ticketsPayloadDTO.push(new GetTicketDTO(ticket))
+        })
+        return ticketsPayloadDTO
     }
 
     async getTicketById(tid) {
@@ -19,10 +25,11 @@ class TicketsService{
         if(!ticket){
             throw new HttpError("Ticket not found", HTTP_STATUS.NOT_FOUND)
         }
-        return ticket
+        const ticketsPayloadDTO = new GetTicketDTO(ticket)
+        return ticketsPayloadDTO
     }
 
-    async createTicker(cid, payload, purchaser){
+    async createTicket(cid, payload, purchaser){
         if(!cid){
             throw new HttpError("Missing param", HTTP_STATUS.BAD_REQUEST)
         }
@@ -33,7 +40,6 @@ class TicketsService{
         await payload.forEach( async item => {
             if(item.quantity > item.product.stock){
                 console.log(`Not enough stock for this item ${item.product.title} with id: ${item.product._id}`);
-                notSold.push(item)
             }else{
                 payload.totalPrice += item.quantity * item.product.price
                 await cartsDao.deleteProductFromCart(cid, item.product._id)
@@ -42,7 +48,8 @@ class TicketsService{
                 if(updateProductPayload.stock === 0){
                     updateProductPayload.status = false
                 }
-                await productsDao.updateById(item.product._id, updateProductPayload)
+                const productPayloadDTO = new UpdateProductDTO(updateProductPayload)
+                await productsDao.updateById(item.product._id, productPayloadDTO)
                 console.log(`Item ${item.product.title} deleted from cart: ${cid}`);
             }
         });
@@ -50,13 +57,8 @@ class TicketsService{
         if(!amount){
             throw new HttpError("Not enough stock purchase any product", HTTP_STATUS.BAD_REQUEST)
         }
-        const fullPayload = {
-            purchaser: purchaser.email,
-            purchase_datetime: new Date(),
-            code: `${Math.floor(Math.random()*1e810)}`,
-            amount
-        }
-        const newTicket = await ticketsDao.create(fullPayload)
+        const ticketsPayloadDTO = new AddTicketDTO(purchaser, amount, payload)
+        const newTicket = await ticketsDao.create(ticketsPayloadDTO)
         return newTicket
     }
 

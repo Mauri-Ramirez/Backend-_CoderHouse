@@ -1,19 +1,19 @@
 const ticketModel = require("../../dao/models/ticket.model")
-//const HTTP_STATUS = require("../../constants/api.constants")
 
 class TicketMongoDao{
 
     async getAll(){
-        const ticket = await ticketModel.find()
+        const ticket = await ticketModel.find().lean()
         return ticket
     }
 
     async getById(tid){
-        const ticket = await ticketModel.findById(tid)
+        const ticket = await ticketModel.findById(tid).lean()
         return ticket
     }
 
     async create(payload){
+        console.log(payload);
         const newTicket = await ticketModel.create(payload)
         return newTicket
     }

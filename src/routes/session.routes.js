@@ -11,7 +11,7 @@ router.post("/register",
 )
 
 router.get("/failRegister", (req, res) =>{
-    res.send({error: req.flash("error")})
+    res.send({error: req.flash()})
 })
 
 

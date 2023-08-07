@@ -1,3 +1,4 @@
+const { response } = require("express")
 const HTTP_STATUS = require("../constants/api.constants.js")
 const CartsService = require ("../services/carts.service.js")
 const TicketsService = require("../services/tickets.service.js")
@@ -13,7 +14,7 @@ class CartsController{
         try {
             const carts = await cartsService.getCarts()
             const response = apiSuccessResponse(carts)
-            res.status(HTTP_STATUS.OK).json(response)
+            return res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
             next(error)
         }
@@ -44,10 +45,13 @@ class CartsController{
         console.log("Hola addproduct");
         try {
             const {cid, pid} = req.params
+            console.log(pid);
             const amount = +req.body?.amount || 1
+            console.log(amount);
             const addedProduct = await cartsService.addProductToCart(cid, pid, amount)
             const response = apiSuccessResponse(addedProduct)
             res.status(HTTP_STATUS.OK).json(response)
+            console.log(addedProduct);
         } catch (error) {
             next(error)
         }
@@ -77,13 +81,19 @@ class CartsController{
 
     static async purchase(req, res, next){
         const purchaser = req.user
+        console.log(purchaser);
         const  { cid } = req.params
+        //console.log(cid);
         try {
             const cart = await cartsService.getCartById(cid)
+            //console.log(cart);
             const payload = cart.products
-            const ticket = await ticketService.createTicker(cid, payload, purchaser)
+            //console.log(payload);
+            const ticket = await ticketService.createTicket(cid, payload, purchaser)
             const response = apiSuccessResponse(ticket)
             res.status(HTTP_STATUS.OK).json(response)
+           // console.log(purchaser);
+            console.log(ticket);
         } catch (error) {
             next(error)            
         }

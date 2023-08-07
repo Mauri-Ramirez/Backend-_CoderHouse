@@ -2,18 +2,19 @@ const express = require("express")
 const apiRouter = require("./routes/app.routers")
 const path = require("path")
 const handlebars = require("express-handlebars")
+const helpers = require("handlebars-helpers")
 const viewsRouter = require("./routes/views.routes")
 const realtimeProd = require("./routes/realtimeprod.router")
 const { Server } = require("socket.io")
 const { socketProduct } = require("./utils/socketProduct")
 const { socketChat } = require("./utils/socketChat")
 
-const MongoStore = require("connect-mongo")
-const session = require("express-session")
+//const MongoStore = require("connect-mongo")
+//const session = require("express-session")
 const passport = require("passport")
 const initializePassport = require("./config/passport.config")
 
-const options = require("./config/options")
+//const options = require("./config/options")
 const cookieParser = require("cookie-parser")
 const { PORT } = require("./config/enviroment.config")
 
@@ -36,30 +37,22 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use('/statics', express.static(path.resolve(__dirname, "./public")))
 app.use(cookieParser())
-
-//Setear session    
- app.use(session({
-    name: "session",
-    secret:"contraseña123",
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24,
-        httpOnly: true
-    },
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: options.mongoDB.url,
-        ttl: 4000 
-    })
-}))
-
 initializePassport()
 app.use(passport.initialize())
-app.use(passport.session())
 
 ///Router
 app.use("/api", apiRouter)
 app.use("/", viewsRouter)
+
+//Templates
+const math = helpers.math();
+app.engine('handlebars', handlebars.engine({
+    helpers: {
+        math
+    }
+}))
+app.set('views', path.resolve(__dirname, './views'));
+app.set('view engine', 'handlebars');
 
 
 //se pone en marcha

@@ -1,5 +1,5 @@
 const { Router } = require("express")
-const  CartsController = require("../controllers/carts.controller")
+const CartsController = require("../controllers/carts.controller")
 const passportCall = require("../middlewares/passport.middleware.js")
 const { userMiddleware } = require("../middlewares/role.middleware.js")
 

@@ -1,8 +1,7 @@
 const getDaos = require("../dao/factory")
 const HTTP_STATUS = require ("../constants/api.constants.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
-const { AddUserDTO, GetUserDTO, UpdateUserDTO } = require("../dao/DTOs/users.dto")
-const HttpError = require("../utils/error.utils.js")
+const { AddUserDTO, GetUserDTO, UpdateUserDTO } = require("../dao/DTOs/users.dto.js")
 const UsersService = require("../services/users.service.js")
 
 
@@ -55,8 +54,7 @@ class UsersController{
         const payload = req.body
         try {
             const userPayload = new UpdateUserDTO(payload)
-            console.log(userPayload);
-            const updatedUser = await usersService.updateUser(uid, payload)
+            const updatedUser = await usersService.updateUser(uid, userPayload)
             const response = apiSuccessResponse(updatedUser)
             return res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {

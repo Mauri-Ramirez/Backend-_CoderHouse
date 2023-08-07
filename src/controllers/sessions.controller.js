@@ -1,13 +1,13 @@
-const { SESSION_KEY } = require("../config/enviroment.config")
+const { SESSION_KEY } = require("../config/enviroment.config.js")
 const HTTP_STATUS = require ("../constants/api.constants.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
 const HttpError = require("../utils/error.utils.js")
 const { generateToken } = require("../utils/session.utils.js")
 
-class SessionController{
+class SessionsController{
 
     static async login(req, res, next){
-        const user = req.user
+        const { user } = req;
         try {
             if(!user){
                 throw new HttpError(HTTP_STATUS.BAD_REQUEST, "User not found")
@@ -17,8 +17,6 @@ class SessionController{
                 maxAge: 60 * 60 * 24 * 1000,
                 httpOnly: true
             })
-            const response = apiSuccessResponse("User logged in successsfully")  
-            //return res.json(response)
             res.redirect("/products")
         } catch (error) {
             next(error)
@@ -26,14 +24,12 @@ class SessionController{
     }   
 
     static async loginGithub(req, res, next){
-       const user = req.user
+        const { user } = req;
        const access_token = generateToken(user)
        res.cookie(SESSION_KEY, access_token, {
             maxAge: 60 * 60 * 24 * 1000,
             httpOnly: true
        })
-       const response = apiSuccessResponse("User logged successfully with github")
-       //return res.json(response)
        res.redirect("/products")
     }
 
@@ -52,4 +48,4 @@ class SessionController{
     }
 }
 
-module.exports = SessionController
+module.exports = SessionsController

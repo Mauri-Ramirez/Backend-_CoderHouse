@@ -24,4 +24,6 @@ const socketProduct = async (io) => {
 
 module.exports = {
     socketProduct}
- 
+
+
+   

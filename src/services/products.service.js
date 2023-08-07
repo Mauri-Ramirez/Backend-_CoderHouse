@@ -1,5 +1,6 @@
 const HTTP_STATUS = require("../constants/api.constants.js")
 const getDaos = require("../dao/factory.js")
+const { GetProductDTO, UpdateProductDTO, AddProductDTO } = require("../dao/DTOs/products.dto.js")
 const HttpError = require("../utils/error.utils.js")
 
 const { productsDao } = getDaos()
@@ -8,7 +9,11 @@ class ProductsService{
 
      async getProducts(filter = {}){
         const products = await productsDao.getAll(filter)
-        return products
+        const productsPayloadDTO = []
+        products.docs.forEach(product => {
+            productsPayloadDTO.push(new GetProductDTO(product))
+        });
+        return productsPayloadDTO
     } 
 
     async getProductById(pid) {
@@ -19,7 +24,8 @@ class ProductsService{
         if(!product){
             throw new HttpError("Product not found", HTTP_STATUS.NOT_FOUND)
         }
-        return product
+        const productPayloadDTO = new GetProductDTO(product)
+        return productPayloadDTO
     }
 
     async createProduct(productPayload, files){
@@ -27,18 +33,8 @@ class ProductsService{
         if(!title || !description || !code || !stock || !price || !category){
             throw new HttpError("Please include all the required fields", HTTP_STATUS.BAD_REQUEST)
         }
-        if(files){
-            const paths = files.map(file => {
-                return{
-                    path: file.path,
-                    originalName: file.originalName
-                }
-            })
-            productPayload.thumbnails = paths
-        }else{
-            productPayload.thumbnails = []
-        }
-        const newProduct = productsDao.add(productPayload)
+        const productPayloadDTO = new AddProductDTO(productPayload, files)
+        const newProduct = productsDao.add(productPayloadDTO)
         return newProduct
     }
 
@@ -50,7 +46,8 @@ class ProductsService{
         if(!product){
             throw new HttpError("Product not found", HTTP_STATUS.NOT_FOUND)
         }
-        const updatedProduct = await productsDao.updateById(pid, productPayload)
+        const productPayloadDTO = new UpdateProductDTO(productPayload)
+        const updatedProduct = await productsDao.updateById(pid, productPayloadDTO)
         return updatedProduct
     }
 

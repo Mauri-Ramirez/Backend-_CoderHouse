@@ -11,10 +11,7 @@ class CartMongoDao {
         const cart = await cartModel.findById(id).lean()
             return cart
     }
-    /* async getById(id) {
-        const cart = await cartModel.findOne({_id: id}).lean()
-            return cart
-    } */
+    
 
     async add(){
         const newCart = await cartModel.create({})
