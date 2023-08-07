@@ -17,7 +17,7 @@ const JwtStrategy = jwt.Strategy
 const ExtractJWT = jwt.ExtractJwt
 
 const initializePassport = () =>{
-    //Local Register
+    //LOCAL REGISTER
      passport.use("register", new LocalStrategy(
         {
             passReqToCallback: true,
