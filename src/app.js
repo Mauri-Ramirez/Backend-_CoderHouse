@@ -4,6 +4,7 @@ const path = require("path")
 const handlebars = require("express-handlebars")
 const helpers = require("handlebars-helpers")
 const viewsRouter = require("./routes/views.routes")
+const mockRoutes = require("./routes/mock.routes.js")
 const realtimeProd = require("./routes/realtimeprod.router")
 const { Server } = require("socket.io")
 const { socketProduct } = require("./utils/socketProduct")
@@ -43,6 +44,7 @@ app.use(passport.initialize())
 ///Router
 app.use("/api", apiRouter)
 app.use("/", viewsRouter)
+app.use("/mockingproducts", mockRoutes)
 
 //Templates
 const math = helpers.math();
