@@ -2,7 +2,9 @@ const HTTP_STATUS = require("../constants/api.constants.js")
 const getDaos = require("../dao/factory.js")
 const { UpdateProductDTO } = require("../dao/DTOs/products.dto.js")
 const { GetTicketDTO, AddTicketDTO } =require("../dao/DTOs/ticket.dto.js")
+const { generateTicketErrorInfo } = require("../utils/error.utils.js")
 const HttpError = require("../utils/error.utils.js")
+const CustomError = require("../utils/customError.js")
 
 const { ticketsDao, cartsDao, productsDao } = getDaos()
 
@@ -30,12 +32,15 @@ class TicketsService{
     }
 
     async createTicket(cid, payload, purchaser){
-        if(!cid){
-            throw new HttpError("Missing param", HTTP_STATUS.BAD_REQUEST)
+        if(!cid || !payload.length || !purchaser){
+            CustomError.createError({
+                name: "Generate ticket error",
+                cause: generateTicketErrorInfo({cid, payload, purchaser}),
+                message: "Error trying to add product to cart",
+                code: HTTP_STATUS.BAD_REQUEST
+            })
         }
-        if(!Object.keys(payload).length){
-            throw new HttpError("Missing products", HTTP_STATUS.BAD_REQUEST)
-        }
+        console.log(payload);
         payload.totalPrice = 0
         await payload.forEach( async item => {
             if(item.quantity > item.product.stock){

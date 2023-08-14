@@ -1,5 +1,7 @@
 const HTTP_STATUS = require("../constants/api.constants.js")
 const getDaos = require("../dao/factory.js")
+const CustomError = require("../utils/customError.js")
+const { generateCartErrorInfo, generateUserErrorInfo } = require("../utils/error.info.js")
 const HttpError = require("../utils/error.utils.js")
 
 const { usersDao, cartsDao } = getDaos()
@@ -23,8 +25,24 @@ class UsersService {
     }
 
     async createUser(payload){
-        if(!Object.keys(payload).length){
-            throw new HttpError("Missin data fo user", HTTP_STATUS.BAD_REQUEST)
+        if(!firstName || !lastName || !age || !email || !password){
+            console.log("missing fields");
+            CustomError.createError({
+                name: "User creation error",
+                cause: generateUserErrorInfo({firstName, lastName, age, email}),
+                message: "Error trying to create user",
+                code: HTTP_STATUS.BAD_REQUEST
+            })
+        }
+        const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        if(!email.match(validRegex)){
+            console.log("not valid email");
+            CustomError.createError({
+                name: "User creation error",
+                cause: generateUserErrorInfo({firstName, lastName, age, email}),
+                message: "Email adress not valid",
+                code: HTTP_STATUS.BAD_REQUEST
+            })
         }
         const  newCart = await cartsDao.add()
         payload.cart = newCart._id
