@@ -1,4 +1,4 @@
-const generateUserErrorInfo = (user) =>{
+/* const generateUserErrorInfo = (user) =>{
     return `One or more properties were incomplete or not valid.
     List of required properties:
     - firstName: needs to be a String, recieved ${user.firstName}
@@ -41,4 +41,4 @@ module.exports = {
     generateProductErrorInfo,
     generateCartErrorInfo,
     generateTicketErrorInfo
-}
+} */

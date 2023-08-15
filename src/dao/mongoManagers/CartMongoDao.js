@@ -15,7 +15,6 @@ class CartMongoDao {
 
     async add(){
         const newCart = await cartModel.create({})
-            console.log("New cart created");
             return newCart
     }
 
@@ -28,7 +27,6 @@ class CartMongoDao {
                 }
             }
         })
-        console.log(`product ${pid} added to cart`);
         return updatedCart
     }    
    
@@ -45,7 +43,6 @@ class CartMongoDao {
 
     async deleteAllProducts(cid){
         const emptyCart = cartModel.updateOne({_id: cid}, {$pull: {products: {}}})
-        console.log("cart empty");
         return emptyCart
     }  
 }

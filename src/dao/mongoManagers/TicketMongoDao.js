@@ -13,7 +13,6 @@ class TicketMongoDao{
     }
 
     async create(payload){
-        console.log(payload);
         const newTicket = await ticketModel.create(payload)
         return newTicket
     }

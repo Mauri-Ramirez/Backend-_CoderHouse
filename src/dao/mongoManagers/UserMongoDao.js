@@ -19,13 +19,11 @@ class UserMongoDao {
 
     async addUser(payload){
         const newUser = await userModel.create(payload)
-        console.log('New user created')
         return newUser
     }
 
     async updateUser(uid, payload){
         const updatedUser = await userModel.findByIdAndUpdate(uid, {$set: payload})
-        console.log("User updated");
         return updatedUser
     }
 

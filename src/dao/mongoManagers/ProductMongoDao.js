@@ -32,7 +32,6 @@ class ProductMongoDao {
 
     async add(payload) {
         await productModel.create(payload)
-        console.log(`${payload.title} added`);
         const newProduct = {
             status: payload.status || true,
             thumbnails: payload.thumbnails || [],
@@ -43,13 +42,11 @@ class ProductMongoDao {
 
     async updateById(pid, payload) {
         const updatedProduct = await productModel.updateOne({_id: pid}, payload)
-        console.log(`${payload.title ?? "product"} modified`);
         return updatedProduct
     }
 
     async delete(pid) {
         const deletedProduct = await productModel.deleteOne({_id: pid})
-        console.log(`product deleted`);
         return deletedProduct
     }
 

@@ -5,6 +5,7 @@ const handlebars = require("express-handlebars")
 const helpers = require("handlebars-helpers")
 const viewsRouter = require("./routes/views.routes")
 const mockRoutes = require("./routes/mock.routes.js")
+const loggerTestRoutes = require("./routes/loggerTest.routes.js")
 const realtimeProd = require("./routes/realtimeprod.router")
 const { Server } = require("socket.io")
 const { socketProduct } = require("./utils/socketProduct")
@@ -18,6 +19,7 @@ const initializePassport = require("./config/passport.config")
 //const options = require("./config/options")
 const cookieParser = require("cookie-parser")
 const { PORT } = require("./config/enviroment.config")
+const addLogger = require("./middlewares/logger.middleware.js")
 
 
 //se inicia el servidor
@@ -40,11 +42,13 @@ app.use('/statics', express.static(path.resolve(__dirname, "./public")))
 app.use(cookieParser())
 initializePassport()
 app.use(passport.initialize())
+app.use(addLogger)
 
 ///Router
 app.use("/api", apiRouter)
 app.use("/", viewsRouter)
 app.use("/mockingproducts", mockRoutes)
+app.use("/loggerTest", loggerTestRoutes)
 
 //Templates
 const math = helpers.math();

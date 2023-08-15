@@ -17,6 +17,7 @@ class SessionsController{
                 maxAge: 60 * 60 * 24 * 1000,
                 httpOnly: true
             })
+            req.logger.info(`${user.email} logged in`)
             res.redirect("/products")
         } catch (error) {
             next(error)
@@ -30,12 +31,14 @@ class SessionsController{
             maxAge: 60 * 60 * 24 * 1000,
             httpOnly: true
        })
+       req.logger.info(`${user.email} logged in with Github`)
        res.redirect("/products")
     }
 
     static async logout(req, res, next){
         try {
             res.clearCookie(SESSION_KEY)
+            req.logger.info("user logged out")
             res.redirect("/")
         } catch (error) {
             next(error)           
