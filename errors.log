@@ -10,3 +10,5 @@
 {"level":"error"}
 {"level":"error"}
 {"level":"error"}
+{"level":"error","message":{"description":"The new password can not be the same that the previous one","status":400}}
+{"level":"error","message":{"description":"The new password can not be the same that the previous one","status":400}}

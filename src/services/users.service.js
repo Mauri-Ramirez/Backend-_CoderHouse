@@ -1,5 +1,6 @@
 const HTTP_STATUS = require("../constants/api.constants.js")
 const getDaos = require("../dao/factory.js")
+const { createHash, isValidPassword } = require("../utils/bcrypt.utils.js")
 const HttpError = require("../utils/error.utils.js")
 
 const { usersDao, cartsDao } = getDaos()
@@ -18,6 +19,17 @@ class UsersService {
         const user = await usersDao.getById(uid)
         if(!user){
             throw new HttpError("Missing data for user", HTTP_STATUS.BAD_REQUEST)  
+        }
+        return user
+    }
+
+    async getByEmail(email){
+        if(!email){
+            throw new HttpError("Must provide an email", HTTP_STATUS.BAD_REQUEST)
+        }
+        const user = await usersDao.getByEmail(email)
+        if(!user){
+            throw new HttpError("User not found", HTTP_STATUS.NOT_FOUND)
         }
         return user
     }
@@ -43,6 +55,27 @@ class UsersService {
         const updatedUser = await usersDao.updateUser(uid, payload)
         return updatedUser
     }
+
+    async updatePassword(email, newPassword){
+        if(!email || !newPassword){
+            throw new HttpError("Email and password are required", HTTP_STATUS.BAD_REQUEST)
+        }
+        const user = await usersDao.getByEmail(email)
+        if(!user){
+            throw new HttpError("User not found", HTTP_STATUS.NOT_FOUND)
+        }
+        if(isValidPassword(user, newPassword)){
+            throw new HttpError("The new password can not be the same that the previous one", HTTP_STATUS.BAD_REQUEST)
+        }
+        const newHashedPassword = createHash(newPassword)
+        console.log(newHashedPassword);
+        const newUser = {
+            password: newHashedPassword
+        }
+        const updatedUser = await usersDao.updateUser(user._id, newUser)
+        return updatedUser
+    }
+
 
     async deleteUser(uid){
         if(!uid){
