@@ -2,7 +2,7 @@ const getDaos = require("../dao/factory")
 const HTTP_STATUS = require ("../constants/api.constants.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
 const ProductsService = require("../services/products.service.js")
-const { AddProductDTO, GetProductDTO, UpdateProductDTO } = require("../dao/DTOs/products.dto.js")
+
 
 const productsService = new ProductsService()
 

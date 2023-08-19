@@ -20,6 +20,11 @@ router.get("/login",
      sessionMiddleware,
      ViewsController.login
 )
+
+router.get("/login/recover",
+    sessionMiddleware,
+    ViewsController.recover
+)
  
 
 router.get("/products",

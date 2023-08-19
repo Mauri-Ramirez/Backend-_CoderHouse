@@ -21,8 +21,15 @@ class ViewsController{
 
     static async login(req, res, next) {
         res.render("login",{
-            tittle: "Login",
+            title: "Login",
             style: "login.css"
+        })
+    }
+
+    static async recover(req, res, next) {
+        res.render("recover", {
+            title: "Recover your password",
+            styles: "recover.css"
         })
     }
 
