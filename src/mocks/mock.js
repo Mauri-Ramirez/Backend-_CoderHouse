@@ -1,7 +1,5 @@
 const { faker } = require("@faker-js/faker/locale/es")
 
-//faker.locale = "en"
-
 const generateProduct = () => {
     const thumbnails = []
     for(let i = 0; i< Math.floor(Math.random() * 6 + 1); i++){
