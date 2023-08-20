@@ -100,6 +100,18 @@ class UsersController{
         }
     }
 
+    static async changeRole(req, res, next) {
+        const { uid } = req.params
+        try {
+            const updatedUSer = await usersService.updateUserRole(uid)
+            req.logger.info("User role updated")
+            const response = apiSuccessResponse(updatedUSer)
+            return res.status(HTTP_STATUS.OK).json(response)
+        } catch (error) {
+            next(error)
+        }
+    }
+
     static async deleteUser(req, res, next){
         const { uid } = req.params
         try {
