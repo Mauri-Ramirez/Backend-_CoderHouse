@@ -20,10 +20,27 @@ const initializePassport = require("./config/passport.config")
 const cookieParser = require("cookie-parser")
 const { PORT } = require("./config/enviroment.config")
 const addLogger = require("./middlewares/logger.middleware.js")
+const swaggerJSDoc = require("swagger-jsdoc")
+const swaggerUiExpress = require("swagger-ui-express")
 
 
 //se inicia el servidor
 const app = express()
+
+//Swagger documentation
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: "E-commerce documentation",
+            description: "Main project for Coderhouse backend course"
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
+const specs = swaggerJSDoc(swaggerOptions)
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 
 //hbs---templates--------------------------------
