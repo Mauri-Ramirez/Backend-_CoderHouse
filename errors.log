@@ -27,3 +27,11 @@
 {"level":"error","message":"Unable to create user, email already registered"}
 {"level":"error","message":"Unable to create user, email already registered"}
 {"level":"error","message":"Unable to create user, email already registered"}
+{"level":"error","message":{"description":"Can not add own products","status":403}}
+{"level":"error","message":{"description":"Can not add own products","status":403}}
+{"level":"error","message":{"description":"Can not add own products","status":403}}
+{"level":"error","message":{"description":"Can not add own products","status":403}}
+{"level":"error","message":{"description":"Can not add own products","status":403}}
+{"level":"error","message":{"description":"Can not add own products","status":403}}
+{"level":"error","message":{"description":"Can not add own products","status":403}}
+{"level":"error","message":{"description":"Can not add own products","status":403}}
