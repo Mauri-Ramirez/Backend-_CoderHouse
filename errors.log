@@ -19,3 +19,11 @@
 {"level":"error","message":{"description":"Product not found","status":404}}
 {"level":"error","message":{"description":"Product not found","status":404}}
 {"level":"error","message":{"description":"Product not found","status":404}}
+{"level":"error","message":"Unable to create user, email already registered"}
+{"level":"error","message":"Unable to create user, email already registered"}
+{"level":"error","message":"Unable to create user, email already registered"}
+{"level":"error","message":"Unable to create user, email already registered"}
+{"level":"error","message":"Unable to create user, email already registered"}
+{"level":"error","message":"Unable to create user, email already registered"}
+{"level":"error","message":"Unable to create user, email already registered"}
+{"level":"error","message":"Unable to create user, email already registered"}

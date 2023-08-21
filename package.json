@@ -5,7 +5,8 @@
   "main": "./src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "test": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "test": "mocha test/**/*.test.js --file test/setup.test.js --timeout 15000"
   },
   "keywords": [],
   "author": "",
@@ -38,6 +39,9 @@
     "winston": "^3.10.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2"
+    "@faker-js/faker": "^8.0.2",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }
