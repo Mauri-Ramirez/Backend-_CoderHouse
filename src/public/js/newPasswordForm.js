@@ -7,6 +7,18 @@ const showError = (messsage) =>{
     form.parentElement.parentElement.appendChild(errorTag)
 }
 
+const showMessage = (message, type = 'success') => {
+    const messageTag = document.createElement("div");
+    if (type === 'success') {
+        messageTag.classList.add("success-message");
+    } else if (type === 'error') {
+        messageTag.classList.add("error-message");
+    }
+    messageTag.textContent = message;
+    form.parentElement.parentElement.appendChild(messageTag);
+}
+
+
 const showRedirectButton = () =>{
     const redirectButton = document.createElement("button")
     redirectButton.innerHTML = `
@@ -27,8 +39,11 @@ form.addEventListener("submit", (event) => {
     .then(response => {
         switch (response.status) {
             case 200:
-                window.location.href = '/login';
                 console.log(response);
+                showMessage("Password changed successfully!");
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
                 break;
             case 400:
                 showError("The new password can not be the same than the previous. Please, choose a new one")

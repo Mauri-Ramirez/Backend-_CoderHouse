@@ -41,3 +41,4 @@
 {"level":"error","message":{"description":"The new password can not be the same that the previous one","status":400}}
 {"level":"error","message":{"description":"Email and password are required","status":400}}
 {"level":"error","message":{"description":"The new password can not be the same that the previous one","status":400}}
+{"level":"error","message":{"description":"The new password can not be the same that the previous one","status":400}}
