@@ -14,7 +14,7 @@ class ViewsController{
     static async register(req, res, next) {
         res.render("register", {
             title: "Sign Up!",
-            style: "register.css"
+            styles: "register.css"
         })
     }
 
@@ -22,7 +22,7 @@ class ViewsController{
     static async login(req, res, next) {
         res.render("login",{
             title: "Login",
-            style: "login.css"
+            styles: "login.css"
         })
     }
 
@@ -41,7 +41,7 @@ class ViewsController{
             const products = await productsService.getProducts(filter)
             res.render("index",{
                 title: "E-commerce",
-                style:"index.css",
+                styles:"index.css",
                 products: products,
                 user: user
             })          
@@ -58,7 +58,7 @@ class ViewsController{
             const cart = await cartsService.getCartById(cid)
             res.render("cart", {
                 title: "Cart",
-                style:"cart.css",
+                styles:"cart.css",
                 user,
                 cart
             })

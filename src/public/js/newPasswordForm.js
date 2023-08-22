@@ -27,6 +27,7 @@ form.addEventListener("submit", (event) => {
     .then(response => {
         switch (response.status) {
             case 200:
+                window.location.href = '/login';
                 console.log(response);
                 break;
             case 400:
