@@ -1,8 +1,11 @@
 const { SESSION_KEY } = require("../config/enviroment.config.js")
 const HTTP_STATUS = require ("../constants/api.constants.js")
+const UsersService = require("../services/users.service.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
 const HttpError = require("../utils/error.utils.js")
 const { generateToken } = require("../utils/session.utils.js")
+
+const usersService = new UsersService()
 
 class SessionsController{
 
@@ -11,6 +14,9 @@ class SessionsController{
         try {
             if(!user){
                 throw new HttpError(HTTP_STATUS.BAD_REQUEST, "User not found")
+            }
+            if(user.role !== "admin"){
+                await usersService.updateUser(user._id, { last_connection : new Date()})
             }
             const access_token = generateToken(user)
             res.cookie(SESSION_KEY, access_token, {
@@ -26,24 +32,28 @@ class SessionsController{
 
     static async loginGithub(req, res, next){
         const { user } = req;
-       const access_token = generateToken(user)
-       res.cookie(SESSION_KEY, access_token, {
+        await usersService.updateUser(user._id, { last_connection: new Date()})
+        const access_token = generateToken(user)
+        res.cookie(SESSION_KEY, access_token, {
             maxAge: 60 * 60 * 24 * 1000,
             httpOnly: true
-       })
-       req.logger.info(`${user.email} logged in with Github`)
-       res.redirect("/products")
+        })
+        req.logger.info(`${user.email} logged in with Github`)
+        res.redirect("/products")
     }
 
     static async logout(req, res, next){
         try {
-            res.clearCookie(SESSION_KEY)
+            const { user } = req;
+            await usersService.updateUser(user.id, { last_connection : new Date() })
+            res.clearCookie(SESSION_KEY);
             req.logger.info("user logged out")
-            res.redirect("/")
+            res.redirect("/");
         } catch (error) {
-            next(error)           
+            next(error) 
         }
     }
+    
 
     static async currentSession(req, res, next){
         const response = apiSuccessResponse(req.user)

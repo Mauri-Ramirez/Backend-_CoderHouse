@@ -1,18 +1,18 @@
-const cartBody = document.querySelector('.cart-container')
-const cartList = document.querySelector('.cart-list')
+const cartBody = document.querySelector(".cart-container")
+const cartList = document.querySelector(".cart-list")
 
 const removeProduct = async (event) =>{
-    const productId = event.target.parentNode.getAttribute('id')
-    const cartId = event.target.parentNode.parentNode.getAttribute('id')
+    const productId = event.target.parentNode.getAttribute("id")
+    const cartId = event.target.parentNode.parentNode.getAttribute("id")
     await fetch(`/api/carts/${cartId}/product/${productId}`, {
         method: 'DELETE'
     })
-    alert('item deleted from cart')
+    alert("item deleted from cart")
     window.location.href = window.location.href
 }
 
 const clearCart = async(event) =>{
-    const cartId = event.target.parentNode.getAttribute('id')
+    const cartId = event.target.parentNode.getAttribute("id")
     await fetch(`/api/carts/${cartId}`,{
         method: 'delete'
     })
@@ -20,7 +20,7 @@ const clearCart = async(event) =>{
 }
 
 const seeTicketButton = tid =>{
-    const ticketButton = document.createElement('button')
+    const ticketButton = document.createElement("button")
     ticketButton.innerText = 'See ticket'
     ticketButton.classList.add('see-ticket', 'waves-effect', 'waves-light', 'btn-small', 'indigo', 'darken-4')
     ticketButton.addEventListener('click', ()=>{

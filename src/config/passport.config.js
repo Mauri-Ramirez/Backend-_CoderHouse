@@ -44,6 +44,9 @@ const initializePassport = () =>{
                     age,
                     password: createHash(password),
                     cart: cart._id,
+                    lastConnection: new Date(),
+                    documents: [],
+                    status: false
                 }
                 const userPayload = new AddUserDTO(newUser)
                 let result = await usersDao.addUser(userPayload)
@@ -112,7 +115,9 @@ const initializePassport = () =>{
                         email: userData.email,
                         password: " ",
                         githubLogin: userData.login,
-                        cart: cart._id
+                        cart: cart._id,
+                        lastConnection: new Date(),
+                        documents
                     }
                     const userPayload = new AddUserDTO(newUser)
                     const response = await usersDao.addUser(userPayload)

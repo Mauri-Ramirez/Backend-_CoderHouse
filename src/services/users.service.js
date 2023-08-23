@@ -44,6 +44,39 @@ class UsersService {
         return newUser
     }
 
+    async addDocuments(uid, file, doctype){
+        if(!file || !doctype){
+            throw new HttpError("Missing document", HTTP_STATUS.BAD_REQUEST)
+        }
+        const paths = {
+            name: file.originalname,
+            reference: file.path,
+            doctype
+        }
+        console.log(paths);
+        console.log("UID provided:", uid);
+        const user = await usersDao.getById(uid)
+        console.log("User retrieved:",user);
+        if (!user) {
+            throw new HttpError('User not found', HTTP_STATUS.NOT_FOUND);
+        }
+        const userPayload = {
+            documents: [
+                ...user.documents,
+                paths
+            ]
+        }
+        const allDocType = [ "id", "address", "account_status"]
+        const allDocuments = allDocType.every(type =>{
+            return userPayload.documents.some(document => document.doctype === type)
+        })
+        if(allDocuments){
+            userPayload.status = true
+        }
+        const updatedUser = await usersDao.updateUser(uid, userPayload)
+        return updatedUser
+    }
+
     async updateUser(uid, payload){
         if(!uid || !Object.keys(payload).length){
             throw new HttpError("Missing data for user", HTTP_STATUS.BAD_REQUEST)
@@ -83,6 +116,9 @@ class UsersService {
         const user = await usersDao.getById(uid)
         if(!user){
             throw new HttpError("User not found", HTTP_STATUS.NOT_FOUND)
+        }
+        if(user.role === "user" && !user.status){
+            throw new HttpError("Incomplete documents", HTTP_STATUS.FORBIDDEN)
         }
         let newRole = {}
         if(user.role === "user"){

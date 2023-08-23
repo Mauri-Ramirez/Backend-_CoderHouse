@@ -8,6 +8,9 @@ class GetUserDTO{
         this.githubLogin = payload.github_login
         this.role = payload.role
         this.cart = payload.cart
+        this.lastConnection = payload.last_connection
+        this.documents = payload.documents
+        this.status = payload.status
     }
 }
 
@@ -21,6 +24,10 @@ class AddUserDTO{
         this.github_login = payload.githubLogin
         this.role = payload.role
         this.cart = payload.cart
+        this.lastConnection = payload.last_connection
+        this.documents = payload.documents
+        this.status = payload.status
+        
     }
 }
 
@@ -35,12 +42,17 @@ class UpdateUserDTO{
         if(payload.githubLogin){
             this.github_login = payload.githubLogin
         }
+        if(payload.lastConnection){
+            this.last_connection = payload.lastConnection
+        }
         const filteredPayload = {
             email: payload.email,
             age: payload.age,
             password: payload.password,
             role: payload.role,
-            cart: payload.cart
+            cart: payload.cart,
+            documents: payload.documents,
+            status: payload.status
         }
         Object.assign(this, filteredPayload)
     }

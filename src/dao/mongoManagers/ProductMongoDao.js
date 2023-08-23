@@ -22,8 +22,6 @@ class ProductMongoDao {
         const products = await productModel.paginate(filter,options)
         return products
     }
-
-
    
     async getById(pid) {
         const product = await productModel.findById(pid)

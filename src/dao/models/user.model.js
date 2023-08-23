@@ -33,6 +33,25 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "carts",
         require: true
+    },
+    documents: {
+        type: [
+            {
+                name: String,
+                reference: String,
+                doctype: {
+                    type : String,
+                    enum: ["id", "address", "account_status"]
+                }
+            }
+        ]
+    },
+    status: {
+        type:Boolean,
+        default: false
+    },
+    last_connection: {
+        type: Date
     }
 })
 

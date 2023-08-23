@@ -1,13 +1,10 @@
-const fs = require('fs')
+const fs = require("fs")
 
 class ProductFileDao{
     
     constructor(path){
         this.path = path
     }
-
-    ///OBTENER PRODUCTOS\\\
-
 
      getAll = async () => {
         if (fs.existsSync(this.path)) {
@@ -20,8 +17,6 @@ class ProductFileDao{
         }
     }
  
-    ///AGREGAR PRODUCTOS\\\ 
-
     async add(product) {
         try{
             const savedProducts = await this.getProducts()
@@ -50,8 +45,6 @@ class ProductFileDao{
         }
     }
 
-    ///TRAER PRODUCTOS POR SU ID\\\
-
     async getById(id) {
         const idNumber = Number(id)
         try{
@@ -66,9 +59,6 @@ class ProductFileDao{
             throw new Error(error.message)
         }
     }
-
-    
-    ///ACTUALIZAR PRODUCTOS POR SU ID \\\
 
     async updateById(id, product) {
         const idNumber = Number(id)
