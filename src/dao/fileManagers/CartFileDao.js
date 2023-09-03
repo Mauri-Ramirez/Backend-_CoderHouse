@@ -7,8 +7,6 @@ class CartFileDao{
         this.path = path
     }
 
-
-     ///OBTENER CART\\\
      async getAll() {
         try{
             if (!existsSync(this.path)){
@@ -26,7 +24,6 @@ class CartFileDao{
         }
     }
 
-    ///TRAER CART POR SU ID\\\
     async getById(id) {
         try{
             const savedCarts = await this.getCarts();
@@ -41,7 +38,6 @@ class CartFileDao{
         }
     }
 
-    ///CREAR UN CART\\\ 
     async add(){
         try{
             const savedCarts = await this.getCarts()
@@ -61,8 +57,6 @@ class CartFileDao{
         }
     }
 
-
-    ///AGREGAR PRODUCTOS A UN CART\\\ 
     async addProductToCart(cartId, productId){
         const allCarts = await this.getCarts()
         const cart = await this.getCartById(cartId)

@@ -16,7 +16,7 @@ const addToCart = async (event) =>{
             body: JSON.stringify({amount}),
         })
         if (addedProduct.status !== 403){
-            alert('item added to cart')
+            alert("item added to cart")
         }else{
             alert("Can't add product to cart")
         }
