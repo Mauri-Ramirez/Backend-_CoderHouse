@@ -1,9 +1,13 @@
 const HTTP_STATUS = require("../constants/api.constants.js")
+const MailController = require("../controllers/mail.controller.js")
 const getDaos = require("../dao/factory.js")
 const { createHash, isValidPassword } = require("../utils/bcrypt.utils.js")
 const HttpError = require("../utils/error.utils.js")
+const MailService = require("./mail.service.js")
 
 const { usersDao, cartsDao } = getDaos()
+
+const mailServie = new MailService()
 
 class UsersService {
     
@@ -137,13 +141,15 @@ class UsersService {
         const date = new Date()
         const twoDaysMs = 2 * 24 * 60 * 60 * 100
         const inactiveUsers = users.filter(user => {
-            if(user.last_connection){
-                return (date.getTime() - user.last_connection.getTime() ) > twoDaysMs
-            }else{
+            if((date.getTime() - user.last_connection.getTime()) > twoDaysMs){
                 return user
             }
         }) 
-        inactiveUsers.forEach(iUser => usersDao.deleteUser(iUser._id))
+        inactiveUsers.forEach(iUser =>{
+            mailServie.notifyDeletion(iUser.email, iUser.first_name)
+            usersDao.deleteUser(iUser._id)
+        })
+            
     }
 
 

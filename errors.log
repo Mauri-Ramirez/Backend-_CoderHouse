@@ -2,4 +2,17 @@
 {"level":"error","message":"Prueba error"}
 {"level":"fatal","message":"Prueba fatal"}
 {"level":"error","message":"Prueba error"}
+{"level":"error"}{"level":"error","message":{"description":"Incomplete documents","status":403}}
 {"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error","message":{"description":"Incomplete documents","status":403}}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials e2-20020a056820060200b00573f244af0fsm3202775oow.11 - gsmtp","responseCode":535}
+{"level":"error","message":{"description":"Only product's owner can delete this resource","status":403}}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials 62-20020a4a0941000000b005732cbd3298sm4389910ooa.40 - gsmtp","responseCode":535}
+{"level":"error","message":{"description":"Only product's owner can delete this resource","status":403}}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials v11-20020a05683018cb00b006b8a2cd44adsm4023911ote.72 - gsmtp","responseCode":535}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials f18-20020a056830205200b006b881a6518esm4073218otp.10 - gsmtp","responseCode":535}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials i6-20020a056870220600b001b3d93884fdsm4794965oaf.57 - gsmtp","responseCode":535}
