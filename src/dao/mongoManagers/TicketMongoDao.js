@@ -28,4 +28,4 @@ class TicketMongoDao{
     }
 }
 
-module.exports = {TicketMongoDao}
+module.exports = TicketMongoDao

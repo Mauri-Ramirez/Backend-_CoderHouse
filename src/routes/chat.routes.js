@@ -7,7 +7,7 @@ const router = Router()
 
  router.get("/",
  passportCall("jwt"),
- roleMiddleware(["user"]),
+ roleMiddleware(["user", "premium"]),
  (req, res)=>{
      res.render("chat", {})
  })

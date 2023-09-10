@@ -12,7 +12,7 @@ const addToCart = async (event) =>{
             headers: {
                 'Content-Type': 'application/json'
             },
-            method: 'PUT',
+            method: 'POST',
             body: JSON.stringify({amount}),
         })
         if (addedProduct.status !== 403){

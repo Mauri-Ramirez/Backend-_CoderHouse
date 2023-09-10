@@ -33,12 +33,14 @@ class ViewsController{
         })
     }
 
-
-    static async products(req, res, next) {
+    
+   static async products(req, res, next) {
         const  {user}  = req
-        const filter = req.query
+        const { limit, page, query, sort } = req.query
+        const protocol = req.protocol
+        const host = req.get("host")
         try {
-            const products = await productsService.getProducts(filter)
+            const products = await productsService.getProducts(limit, page, query, sort, protocol, host)
             res.render("index",{
                 title: "E-commerce",
                 styles:"index.css",

@@ -18,9 +18,9 @@ switch(PERSISTENCE){
     case "MONGO": {
         dbconfig.connectDB()
         const CartMongoDao = require("./mongoManagers/CartMongoDao")
-        const { ProductMongoDao } = require("./mongoManagers/ProductMongoDao")
+        const ProductMongoDao = require("./mongoManagers/ProductMongoDao")
         const UserMongoDao = require("./mongoManagers/UserMongoDao")
-        const { TicketMongoDao } = require("./mongoManagers/TicketMongoDao.js")
+        const TicketMongoDao = require("./mongoManagers/TicketMongoDao.js")
         cartsDao = new CartMongoDao()
         productsDao = new ProductMongoDao()
         usersDao = new UserMongoDao()

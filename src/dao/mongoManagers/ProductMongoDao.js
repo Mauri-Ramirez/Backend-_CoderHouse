@@ -2,24 +2,8 @@ const productModel = require("../models/product.model");
 
 class ProductMongoDao {
     
-    async getAll({limit, page, query, sort}) {
-        let filter
-        if(!query){
-            filter =  {}
-        }else if(query == "true"){
-            filter = {status: true}
-        }else if(query == "false"){
-            filter = {status: false}
-        }else{
-            filter = {category: query}
-        }
-        const options = {
-            sort: (sort ? {price: sort} : {}),
-            limit: limit || 10,
-            page: page || 1,
-            lean: true
-        }
-        const products = await productModel.paginate(filter,options)
+    async getAll(filter, options) {
+        const products = await productModel.paginate(filter, options)
         return products
     }
    
@@ -51,4 +35,4 @@ class ProductMongoDao {
 
 }
 
-module.exports = {ProductMongoDao}
+module.exports = ProductMongoDao

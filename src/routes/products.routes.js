@@ -8,7 +8,7 @@ const router = Router()
 router.get("/", ProductsController.getAll)
 router.get('/:pid', ProductsController.getById)
 router.post('/', passportCall("jwt"), roleMiddleware(["admin", "premium"]), ProductsController.addProduct)
-router.put('/:pid', passportCall("jwt"), roleMiddleware(["admin"]), ProductsController.updateProduct)
+router.put('/:pid', passportCall("jwt"), roleMiddleware(["admin", "premium"]), ProductsController.updateProduct)
 router.delete('/:pid', passportCall("jwt"), roleMiddleware(["admin", "premium"]), ProductsController.deleteProduct)
 
 module.exports = router;

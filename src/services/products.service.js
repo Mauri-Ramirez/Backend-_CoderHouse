@@ -10,14 +10,49 @@ const mailService = new MailService
 
 class ProductsService{
 
-     async getProducts(filter = {}){
-        const products = await productsDao.getAll(filter)
+    async getProducts(limit, page, query, sort, protocol, host) {
+        let filter
+        if(!query){
+            filter =  {}
+        }else if(query == "true"){
+            filter = {status: true}
+        }else if(query == "false"){
+            filter = {status: false}
+        }else{
+            filter = {category: query}
+        }
+        const options = {
+            sort: (sort ? {price: sort} : {}),
+            page: page || 1,
+            lean: true
+        }
+        if(limit){
+            options.limit = limit
+        }
+        const products = await productsDao.getAll(filter, options)
         const productsPayloadDTO = []
         products.docs.forEach(product => {
             productsPayloadDTO.push(new GetProductDTO(product))
         });
-        return productsPayloadDTO
-    } 
+        products.docs = productsPayloadDTO
+        if(!products.hasPrevPage){
+            products.prevLink = null
+        }else{
+            const actualLimit = limit ? `&limit=${limit}` : ""
+            const actualQuery = query ? `&query=${query}` : ""
+            const actualSort = sort ? `&sort=${sort}` : ""
+            products.prevLink = `${protocol}://${host}/api/products?page=${page - 1}` + actualLimit + actualQuery + actualSort
+        }
+        if(!products.hasNextPage){
+            products.nextLink = null
+        }else{
+            const actualLimit = limit ? `&limit=${limit}` : ""
+            const actualQuery = query ? `&query=${query}` : ""
+            const actualSort = sort ? `&sort=${sort}` : ""
+            products.nextLink = `${protocol}://${host}/api/products?page=${(page ?? 1) + 1}` + actualLimit + actualQuery + actualSort
+        }
+        return products
+    }
 
     async getProductById(pid) {
         if(!pid){

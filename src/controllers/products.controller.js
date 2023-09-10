@@ -8,9 +8,11 @@ const productsService = new ProductsService()
 class ProductsController{
 
     static async getAll(req, res, next) {
-        const filter = req.query
+        const { limit, page, query, sort} = req.query
+        const protocol = req.protocol
+        const host = req.get("host")
         try {
-            const products = await productsService.getProducts(filter)
+            const products = await productsService.getProducts(limit, page, query, sort, protocol, host)
             const response = apiSuccessResponse(products)
             return res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {
@@ -31,8 +33,8 @@ class ProductsController{
 
     static async addProduct(req, res, next) {
         const productPayload = req.body
-        const owner = req.user.email
         const { files } = req
+        const owner = req.user.email
         try {
             const addProduct = await productsService.createProduct(productPayload, files, owner)
             req.logger.info(`${productPayload.title} created`)
@@ -47,8 +49,8 @@ class ProductsController{
         const { pid } = req.params
         const productPayload = req.body
         try {
-            const updatedProduct = productsService.updateProduct(pid, productPayload)
-            req.logger.info(`product ${pid} update`)
+            const updatedProduct = await productsService.updateProduct(pid, productPayload)
+            req.logger.info(`product ${pid} updated`)
             const response = apiSuccessResponse(updatedProduct)
             return res.status(HTTP_STATUS.OK).json(response)
         } catch (error) {

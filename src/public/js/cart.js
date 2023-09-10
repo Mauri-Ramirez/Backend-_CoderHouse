@@ -19,7 +19,7 @@ const clearCart = async(event) =>{
     window.location.href = window.location.href
 }
 
-const seeTicketButton = tid =>{
+/* const seeTicketButton = tid =>{
     const ticketButton = document.createElement("button")
     ticketButton.innerText = 'See ticket'
     ticketButton.classList.add('see-ticket', 'waves-effect', 'waves-light', 'btn-small', 'indigo', 'darken-4')
@@ -27,7 +27,18 @@ const seeTicketButton = tid =>{
         window.location.pathname = `/ticket/${tid}`
     })
     cartBody.appendChild(ticketButton)
+} */
+
+const seeTicketButton = ticketId => {
+    const ticketButton = document.createElement("button");
+    ticketButton.innerText = 'See ticket';
+    ticketButton.classList.add('see-ticket', 'waves-effect', 'waves-light', 'btn-small', 'indigo', 'darken-4');
+    ticketButton.addEventListener('click', ()=>{
+        window.location.pathname = `/ticket/${ticketId}`;
+    })
+    cartBody.appendChild(ticketButton);
 }
+
 
 const showThanks = () =>{
     const thanksTag = document.createElement('p')
@@ -35,18 +46,26 @@ const showThanks = () =>{
     cartBody.appendChild(thanksTag)
 }
 
-const purchase = async(event) =>{
-    const cartId = event.target.parentNode.getAttribute('id')
+const purchase = async(event) => {
+    const cartId = event.target.parentNode.getAttribute('id');
     await fetch(`/api/carts/${cartId}/purchase`,{
         method: 'put'
     })
     .then(response => response.json())
     .then(response => {
-        console.log(response); // Imprime toda la respuesta
-        seeTicketButton(response.payload._id);
+        if(response.success && response.payload.newTicket) {
+            const ticketId = response.payload.newTicket._id;
+            seeTicketButton(ticketId); // Asegúrate de que estás pasando el ID correcto
+        }
     })
-    .catch(error => console.error('Error:', error)); // Manejo de errores
+    .catch(error => {
+        console.error('Error:', error); // Manejo de errores
+    });
     cartList.remove();
     showThanks();
 }
+
+
+
+
 
