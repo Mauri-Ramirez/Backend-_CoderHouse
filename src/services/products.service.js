@@ -11,48 +11,56 @@ const mailService = new MailService
 class ProductsService{
 
     async getProducts(limit, page, query, sort, protocol, host) {
-        let filter
+        let filter;
         if(!query){
-            filter =  {}
-        }else if(query == "true"){
-            filter = {status: true}
-        }else if(query == "false"){
-            filter = {status: false}
-        }else{
-            filter = {category: query}
+            filter = {};
+        } else if(query == "true"){
+            filter = {status: true};
+        } else if(query == "false"){
+            filter = {status: false};
+        } else {
+            filter = {category: query};
         }
+    
+        // Asegurarse de que "page" sea un número o establecerlo en 1 si no lo es
+        page = Number(page) || 1;
+    
         const options = {
             sort: (sort ? {price: sort} : {}),
-            page: page || 1,
+            page: page,
             lean: true
-        }
+        };
         if(limit){
-            options.limit = limit
+            options.limit = limit;
         }
-        const products = await productsDao.getAll(filter, options)
-        const productsPayloadDTO = []
+    
+        const products = await productsDao.getAll(filter, options);
+        const productsPayloadDTO = [];
         products.docs.forEach(product => {
-            productsPayloadDTO.push(new GetProductDTO(product))
+            productsPayloadDTO.push(new GetProductDTO(product));
         });
-        products.docs = productsPayloadDTO
+    
+        products.docs = productsPayloadDTO;
+    
+        const actualLimit = limit ? `&limit=${limit}` : "";
+        const actualQuery = query ? `&query=${query}` : "";
+        const actualSort = sort ? `&sort=${sort}` : "";
+    
         if(!products.hasPrevPage){
-            products.prevLink = null
-        }else{
-            const actualLimit = limit ? `&limit=${limit}` : ""
-            const actualQuery = query ? `&query=${query}` : ""
-            const actualSort = sort ? `&sort=${sort}` : ""
-            products.prevLink = `${protocol}://${host}/api/products?page=${page - 1}` + actualLimit + actualQuery + actualSort
+            products.prevLink = null;
+        } else {
+            products.prevLink = `${protocol}://${host}/products?page=${page - 1}` + actualLimit + actualQuery + actualSort;
         }
+    
         if(!products.hasNextPage){
-            products.nextLink = null
-        }else{
-            const actualLimit = limit ? `&limit=${limit}` : ""
-            const actualQuery = query ? `&query=${query}` : ""
-            const actualSort = sort ? `&sort=${sort}` : ""
-            products.nextLink = `${protocol}://${host}/api/products?page=${(page ?? 1) + 1}` + actualLimit + actualQuery + actualSort
+            products.nextLink = null;
+        } else {
+            products.nextLink = `${protocol}://${host}/products?page=${page + 1}` + actualLimit + actualQuery + actualSort;
         }
-        return products
+    
+        return products;
     }
+    
 
     async getProductById(pid) {
         if(!pid){
