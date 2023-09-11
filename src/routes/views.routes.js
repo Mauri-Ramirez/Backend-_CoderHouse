@@ -3,6 +3,7 @@ const ViewsController = require("../controllers/views.controller")
 const { sessionMiddleware } = require ("../middlewares/session.middleware")
 const { authMiddleware } = require ("../middlewares/auth.middleware")
 const passportCall = require("../middlewares/passport.middleware")
+const { roleMiddleware } = require("../middlewares/role.middleware")
 
 const router = Router()
 
@@ -48,6 +49,12 @@ router.get("/ticket/:tid",
 
 router.get("/newpasswordform",
     ViewsController.passwordForm
+)
+
+router.get("/users",
+passportCall("jwt"),
+roleMiddleware(["admin"]),
+ViewsController.users
 )
 
 module.exports = router

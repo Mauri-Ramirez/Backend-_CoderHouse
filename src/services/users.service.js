@@ -121,9 +121,9 @@ class UsersService {
         if(!user){
             throw new HttpError("User not found", HTTP_STATUS.NOT_FOUND)
         }
-        if(user.role === "user" && !user.status){
+        /* if(user.role === "user" && !user.status){
             throw new HttpError("Incomplete documents", HTTP_STATUS.FORBIDDEN)
-        }
+        } */
         let newRole = {}
         if(user.role === "user"){
             newRole.role = "premium"
@@ -131,28 +131,31 @@ class UsersService {
         if(user.role === "premium"){
             newRole.role = "user"
         }
-        const updatedUser = await usersDao.updateUser(user._id, newRole)
+        const updatedUser = await usersDao.updateUser(uid, newRole)
         return updatedUser
 
     }
 
-    async deleteInactive(){
-        const users = await usersDao.getAll()
-        const date = new Date()
-        const twoDaysMs = 2 * 24 * 60 * 60 * 100
+    async deleteInactive() {
+        const users = await usersDao.getAll();
+        const date = new Date();
+        const twoDaysMs = 2 * 24 * 60 * 60 * 1000;  // o el tiempo que desees establecer
+    
+        // Filtramos los usuarios
         const inactiveUsers = users.filter(user => {
-            if((date.getTime() - user.last_connection.getTime()) > twoDaysMs){
-                return user
+            // Excluimos al administrador y a aquellos usuarios que no tienen last_connection
+            if (user.role !== 'admin' && user.last_connection && (date.getTime() - user.last_connection.getTime()) > twoDaysMs) {
+                return user;
             }
-        }) 
-        inactiveUsers.forEach(iUser =>{
-            mailServie.notifyDeletion(iUser.email, iUser.first_name)
-            usersDao.deleteUser(iUser._id)
-        })
-            
+        });
+    
+        // Luego, para cada usuario inactivo, enviamos un correo y lo eliminamos
+        inactiveUsers.forEach(iUser => {
+            mailServie.notifyDeletion(iUser.email, iUser.first_name);
+            usersDao.deleteUser(iUser._id);
+        });
     }
-
-
+    
     async deleteUser(uid){
         if(!uid){
             throw new HttpError("Must provide an id", HTTP_STATUS.BAD_REQUEST)

@@ -18,6 +18,11 @@
             {{#if user}}
             <li><button id="logout-button">Logout</button></li>
             {{/if}}
+            {{#if admin}}
+                <li>
+                    <a href="/users">Ver usuarios</a>
+                </li>
+            {{/if}}
         </ul>
         </div>
     </nav>
