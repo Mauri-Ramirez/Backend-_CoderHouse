@@ -80,7 +80,7 @@ app.set('view engine', 'handlebars');
 //se pone en marcha
 const httpServer = app.listen(PORT, err =>{
     if (err)console.log(err);
-    console.log("server running in port", PORT);
+    console.log("server running in port " + PORT);
 })
 
 const io = new Server(httpServer)
