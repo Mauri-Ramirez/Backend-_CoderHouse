@@ -90,7 +90,7 @@ const initializePassport = () =>{
         }
     ))
 
-    //Github Strategy
+    //Github Strategy.
     passport.use(
         new GitHubStrategy({
             clientID: "Iv1.3ad9386e54c96ebf",
