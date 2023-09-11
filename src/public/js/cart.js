@@ -19,15 +19,6 @@ const clearCart = async(event) =>{
     window.location.href = window.location.href
 }
 
-/* const seeTicketButton = tid =>{
-    const ticketButton = document.createElement("button")
-    ticketButton.innerText = 'See ticket'
-    ticketButton.classList.add('see-ticket', 'waves-effect', 'waves-light', 'btn-small', 'indigo', 'darken-4')
-    ticketButton.addEventListener('click', ()=>{
-        window.location.pathname = `/ticket/${tid}`
-    })
-    cartBody.appendChild(ticketButton)
-} */
 
 const seeTicketButton = ticketId => {
     const ticketButton = document.createElement("button");
@@ -55,11 +46,11 @@ const purchase = async(event) => {
     .then(response => {
         if(response.success && response.payload.newTicket) {
             const ticketId = response.payload.newTicket._id;
-            seeTicketButton(ticketId); // Asegúrate de que estás pasando el ID correcto
+            seeTicketButton(ticketId); 
         }
     })
     .catch(error => {
-        console.error('Error:', error); // Manejo de errores
+        console.error('Error:', error);
     });
     cartList.remove();
     showThanks();

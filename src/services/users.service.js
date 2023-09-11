@@ -1,5 +1,4 @@
 const HTTP_STATUS = require("../constants/api.constants.js")
-const MailController = require("../controllers/mail.controller.js")
 const getDaos = require("../dao/factory.js")
 const { createHash, isValidPassword } = require("../utils/bcrypt.utils.js")
 const HttpError = require("../utils/error.utils.js")
@@ -139,17 +138,14 @@ class UsersService {
     async deleteInactive() {
         const users = await usersDao.getAll();
         const date = new Date();
-        const twoDaysMs = 2 * 24 * 60 * 60 * 1000;  // o el tiempo que desees establecer
+        const twoDaysMs = 2 * 24 * 60 * 60 * 1000;
     
-        // Filtramos los usuarios
         const inactiveUsers = users.filter(user => {
-            // Excluimos al administrador y a aquellos usuarios que no tienen last_connection
             if (user.role !== 'admin' && user.last_connection && (date.getTime() - user.last_connection.getTime()) > twoDaysMs) {
                 return user;
             }
         });
     
-        // Luego, para cada usuario inactivo, enviamos un correo y lo eliminamos
         inactiveUsers.forEach(iUser => {
             mailServie.notifyDeletion(iUser.email, iUser.first_name);
             usersDao.deleteUser(iUser._id);

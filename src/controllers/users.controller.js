@@ -1,4 +1,3 @@
-const getDaos = require("../dao/factory")
 const HTTP_STATUS = require ("../constants/api.constants.js")
 const { apiSuccessResponse } = require("../utils/api.utils.js")
 const { AddUserDTO, GetUserDTO, UpdateUserDTO } = require("../dao/DTOs/users.dto.js")

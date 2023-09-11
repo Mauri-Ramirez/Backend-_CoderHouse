@@ -1,7 +1,11 @@
+nav h1{
+    background-color: black;
+}
+
 .login-title{
     text-align: center;
-    color: #444;
-    font-size: 3rem;
+    color: #383737;
+    font-size: 4rem;
 }
 
 .login-form-container{

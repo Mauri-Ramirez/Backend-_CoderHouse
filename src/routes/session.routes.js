@@ -4,7 +4,6 @@ const passportCall = require("../middlewares/passport.middleware")
 
 const router = Router();
 
-//POST 
 router.post("/register",
     passportCall("register", {failureRedirect: "/api/session/failRegister", failureFlash: true}),
     (req, res) =>res.redirect("/login")

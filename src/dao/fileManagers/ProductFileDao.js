@@ -9,7 +9,6 @@ class ProductFileDao{
      getAll = async () => {
         if (fs.existsSync(this.path)) {
             const data = await fs.promises.readFile(this.path, "utf-8");
-            //console.log(data);
             const products = JSON.parse(data);
             return products;
         }else{
@@ -82,10 +81,6 @@ class ProductFileDao{
             throw new Error(error.message)
         }
     }
-
-
-
-    ///BORRAR PRODUCTOS POR SU ID\\\
 
      async delete(id) {
         const idNumber = Number(id)

@@ -11,12 +11,11 @@ const { Server } = require("socket.io")
 const { socketProduct } = require("./utils/socketProduct")
 const { socketChat } = require("./utils/socketChat")
 
-//const MongoStore = require("connect-mongo")
-//const session = require("express-session")
+
 const passport = require("passport")
 const initializePassport = require("./config/passport.config")
 
-//const options = require("./config/options")
+
 const cookieParser = require("cookie-parser")
 const { PORT } = require("./config/enviroment.config")
 const addLogger = require("./middlewares/logger.middleware.js")

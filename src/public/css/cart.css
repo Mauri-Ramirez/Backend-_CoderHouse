@@ -1,3 +1,6 @@
+nav h1{
+    background-color: black;
+}
 
 body{
     background-color: #dfdfdf;
@@ -17,7 +20,7 @@ body{
 .clear-button{
     display: block;
     margin: auto;
-    background-color: #f44336;
+    background-color: #f03225;
 }
 
 .clear-button:hover{
@@ -25,7 +28,7 @@ body{
 }
 
 .product-item{
-    background-color: #adcedb;
+    background-color: #97d2e9;
     margin: 1rem;
     padding: 0.5rem 1rem;
     width: 90vw;
@@ -43,7 +46,7 @@ body{
 
 .remove-button{
     margin: 0.5rem 0;
-    background-color: #ffeb3b;
+    background-color: #d6c424;
 }
 
 .quantity-tag{

@@ -61,7 +61,6 @@ class CartFileDao{
         const allCarts = await this.getCarts()
         const cart = await this.getCartById(cartId)
         const cartIndex = allCarts.findIndex(item => item.id === cart.id)
-        //console.log(cartIndex);
         if(cart.error){
             return cart.error
         }

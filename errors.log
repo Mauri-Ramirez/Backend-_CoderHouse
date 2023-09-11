@@ -36,3 +36,8 @@
 {"level":"error"}
 {"level":"error"}
 {"level":"error"}
+{"level":"error"}
+{"level":"error","message":{"description":"Only product's owner can delete this resource","status":403}}
+{"level":"error","message":{"description":"Specify a new amount number for the product","status":400}}
+{"level":"error","message":{"description":"Missing data for user","status":400}}
+{"level":"error","message":{"description":"Can not add own products","status":403}}

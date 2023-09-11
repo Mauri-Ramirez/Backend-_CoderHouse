@@ -22,7 +22,6 @@ class ProductsService{
             filter = {category: query};
         }
     
-        // Asegurarse de que "page" sea un número o establecerlo en 1 si no lo es
         page = Number(page) || 1;
     
         const options = {

@@ -85,10 +85,7 @@ class CartsController{
         const  { cid } = req.params
         try {
             const ticket = await ticketService.createTicket(cid, purchaser)
-            
-            // Aquí agregas el console.log para verificar el contenido de 'ticket'
             console.log(ticket);
-    
             req.logger.info(`Successful purchase`)
             const response = apiSuccessResponse(ticket)
             res.status(HTTP_STATUS.OK).json(response)
@@ -97,20 +94,6 @@ class CartsController{
         }
     }
     
-
-    /* static async purchase(req, res, next){
-        const purchaser = req.user
-        const  { cid } = req.params
-        try {
-            const ticket = await ticketService.createTicket(cid, purchaser)
-            req.logger.info(`Successful purchase`)
-            const response = apiSuccessResponse(ticket)
-            res.status(HTTP_STATUS.OK).json(response)
-        } catch (error) {
-            next(error)            
-        }
-    } */
-
     static async removeProduct(req, res, next){
         const {cid, pid} = req.params
         try {
