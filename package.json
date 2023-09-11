@@ -8,6 +8,9 @@
     "dev": "nodemon src/app.js",
     "test": "mocha test/**/*.test.js --file test/setup.test.js --timeout 15000"
   },
+  "engines": {
+    "node": "18"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
